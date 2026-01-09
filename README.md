@@ -1,16 +1,74 @@
-# React + Vite
+# Brew-Bite Dashboard ☕️
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**Brew-Bite Dashboard** is a modern and responsive admin panel built to manage cafe and restaurant operations efficiently.
+The system provides real-time order tracking, order status management, menu control, user management, and analytics
+through a clean and intuitive interface.
 
-Currently, two official plugins are available:
+This dashboard is designed to be fast, scalable, and easy to maintain, making it suitable for real-world POS
+(Point of Sale) and order management systems.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## React Compiler
+## ✨ Features
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- 📦 **Order Panel**
 
-## Expanding the ESLint configuration
+  - View and track daily orders in real time
+  - Order status management (Preparing, Ready, Delivered)
+  - Search and filter orders by status, time, or customer
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- 🛒 **Order Management**
+
+  - Detailed order view
+  - Payment status tracking
+  - Pickup and delivery support
+
+- 🍽 **Menu Management**
+
+  - Add, update, and remove menu items
+  - Control item availability
+
+- 👥 **User Management**
+
+  - Manage staff and system users
+  - Role-based access (admin / manager)
+
+- 📊 **Reports & Analytics**
+
+  - Daily order statistics
+  - Performance insights
+  - Sales overview
+
+- 🎨 **Modern UI**
+  - Clean dashboard layout
+  - Fully responsive design
+  - Optimized for desktop and tablet use
+
+---
+
+## 🧱 Tech Stack
+
+### Frontend
+
+- **React** – Component-based UI development
+- **React Query (TanStack Query)** – Server state management and caching
+- **Tailwind CSS** – Utility-first styling
+- **Vite** – Fast development and build tool
+- **React Router** – Client-side routing
+- **Axios** – API communication
+
+### Backend
+
+- **Supabase**
+  - Authentication
+  - Database (PostgreSQL)
+  - Real-time subscriptions
+  - Storage
+
+---
+
+## 🔐 Authentication & Data
+
+- User authentication handled via **Supabase Auth**
+- Real-time order updates using **Supabase subscriptions**
+- Secure API access with environment variables
