@@ -55,7 +55,6 @@ This dashboard is designed to be fast, scalable, and easy to maintain, making it
 - **Tailwind CSS** – Utility-first styling
 - **Vite** – Fast development and build tool
 - **React Router** – Client-side routing
-- **Axios** – API communication
 
 ### Backend
 
