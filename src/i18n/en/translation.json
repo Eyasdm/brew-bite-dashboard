@@ -1,0 +1,289 @@
+{
+  "systemSettings": {
+    "title": "System Settings",
+    "subtitle": "Manage basic system preferences",
+    "languageRegion": "Language & Region",
+    "appearance": "Appearance"
+  },
+
+  "actions": {
+    "toggleTheme": "Toggle theme",
+    "toggleSidebar": "Toggle sidebar",
+    "logout": "Logout"
+  },
+  "form": {
+    "email": "Email",
+    "password": "Password"
+  },
+
+  "login": {
+    "subtitle": "Your café management, all in one place",
+    "submit": "Log In",
+    "loading": "Logging in...",
+    "forgotPassword": "Forgot Password?"
+  },
+
+  "navigation": {
+    "dashboard": "Dashboard",
+    "orders": "Orders",
+    "menu": "Menu",
+    "settings": "Settings",
+    "users": "Users"
+  },
+
+  "sidebar": {
+    "subtitle": "Manager Dashboard",
+    "orderPanel": "Order Panel",
+    "orderManagement": "Order Management",
+    "menuManagement": "Menu Management",
+    "userManagement": "User Management",
+    "reports": "Reports & Analytics",
+    "systemSettings": "System Settings",
+    "defaultUser": "Admin Manager",
+    "userAvatar": "User avatar"
+  },
+
+  "menu": {
+    "title": "Menu Management",
+    "addNew": "Add New Drink",
+    "searchPlaceholder": "Search menu...",
+    "loading": "Loading menu...",
+    "empty": "No menu items found.",
+    "toggleAvailability": "Toggle availability",
+    "confirmDelete": "Are you sure you want to delete this item?",
+    "toast": {
+      "addSuccess": "Item added successfully",
+      "addError": "Failed to add item"
+    },
+    "categories": {
+      "all": "All Categories",
+      "drink": "Drinks",
+      "dessert": "Desserts"
+    },
+    "addDrink": {
+      "title": "Add New Drink",
+      "name": "Drink Name",
+      "namePlaceholder": "Enter drink name",
+      "price": "Price ($)",
+      "category": "Category",
+      "selectCategory": "Select category",
+      "image": "Image URL",
+      "description": "Description",
+      "descriptionPlaceholder": "Brief description",
+      "available": "Available",
+      "submit": "Add Drink"
+    },
+
+    "availability": {
+      "all": "All",
+      "available": "Available",
+      "unavailable": "Unavailable"
+    }
+  },
+
+  "orders": {
+    "loading": "loading... ",
+    "title": "Order Management",
+    "subtitle": "Track, filter, and export your recent orders.",
+    "filters": "Order Filters",
+    "search": "Search orders...",
+    "dateRange": "Date Range",
+    "recent": "Recent Orders",
+    "showing": "Showing results based on your filters",
+    "empty": "No orders match your filters.",
+    "actions": "Actions",
+
+    "guest": "Guest",
+    "tablename": "Table",
+    "estimate": "Est. {{mins}} min",
+    "markReady": "Mark Ready",
+    "markDelivered": "Mark Delivered",
+
+    "table": {
+      "order": "Order",
+      "customer": "Customer",
+      "datetime": "Date & Time",
+      "status": "Status",
+      "type": "Type",
+      "payment": "Payment",
+      "total": "Total",
+      "actions": "Actions"
+    },
+
+    "type": {
+      "dine-in": "Dine-in",
+      "pickup": "Pickup",
+      "delivery": "Delivery",
+      "unknown": "—"
+    },
+
+    "status": {
+      "preparing": "Preparing",
+      "ready": "Ready",
+      "delivered": "Delivered",
+      "cancelled": "Cancelled"
+    },
+
+    "payment": {
+      "paid": "Paid",
+      "unpaid": "Unpaid"
+    },
+
+    "tableHead": {
+      "order": "Order #",
+      "customer": "Customer",
+      "datetime": "Date & Time",
+      "status": "Status",
+      "type": "Type",
+      "payment": "Payment",
+      "total": "Total",
+      "actions": "Actions"
+    },
+
+    "errors": {
+      "loadFailed": "Failed to load orders",
+      "updateFailed": "Failed to update status"
+    }
+  },
+
+  "ordersPanel": {
+    "title": "Orders Panel",
+    "today": "Today's Orders",
+    "total": "Total Orders",
+    "search": "Search by order number, customer name, or drink...",
+    "loading": "Loading orders...",
+    "empty": "No orders match your filters."
+  },
+
+  "user": {
+    "create": {
+      "title": "Create New User",
+      "submit": "Create User",
+      "success": "User created successfully",
+      "error": "Failed to create user"
+    },
+    "edit": {
+      "title": "Edit User",
+      "submit": "Save Changes",
+      "success": "User updated successfully",
+      "error": "Failed to update user"
+    },
+    "fields": {
+      "name": "Full Name",
+      "namePlaceholder": "Enter full name",
+      "email": "Email Address",
+      "emailPlaceholder": "Enter email address",
+      "password": "Password",
+      "passwordPlaceholder": "Enter password",
+      "role": "Role",
+      "status": "Status",
+      "active": "Active",
+      "inactive": "Inactive"
+    },
+    "confirmDelete": "Are you sure you want to delete this user?"
+  },
+
+  "users": {
+    "title": "User Management",
+    "subtitle": "Manage staff and admin accounts.",
+    "createuser": "Create User",
+    "search": "Search user by name or email...",
+    "tableTitle": "Staff & Admin Data",
+    "actions": "Actions",
+    "empty": "No users found.",
+
+    "roles": {
+      "admin": "Admin",
+      "staff": "Staff"
+    },
+
+    "status": {
+      "active": "Active",
+      "inactive": "Inactive"
+    },
+
+    "stats": {
+      "total": "Total Users",
+      "admins": "Admins",
+      "active": "Active",
+      "inactive": "Inactive"
+    },
+
+    "table": {
+      "user": "User",
+      "joinDate": "Join Date",
+      "role": "Role",
+      "status": "Status",
+      "actions": "Actions"
+    }
+  },
+
+  "filters": {
+    "status": {
+      "all": "All Status"
+    },
+    "sort": {
+      "newest": "Newest First",
+      "oldest": "Oldest First"
+    },
+    "type": {
+      "all": "All Types",
+      "inStore": "In-store",
+      "delivery": "Delivery",
+      "pickup": "Pick-up"
+    },
+    "date": {
+      "today": "Today",
+      "last7": "Last 7 days",
+      "last30": "Last 30 days",
+      "custom": "Custom Range"
+    }
+  },
+
+  "system": {
+    "languageLabel": "Language",
+    "currencyLabel": "Currency",
+    "timezoneLabel": "Time Zone",
+    "themeLabel": "Theme",
+
+    "language": {
+      "en": "English",
+      "id": "Indonesian"
+    },
+    "currency": {
+      "usd": "USD ($)",
+      "idr": "IDR (Rp)"
+    },
+    "timezone": {
+      "wib": "WIB (UTC+7) – Western Indonesia",
+      "wita": "WITA (UTC+8) – Central Indonesia",
+      "wit": "WIT (UTC+9) – Eastern Indonesia"
+    },
+    "theme": {
+      "light": "Light",
+      "dark": "Dark",
+      "system": "System"
+    }
+  },
+
+  "common": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "search": "Search",
+    "refresh": "Refresh",
+    "edit": "Edit",
+    "delete": "Delete",
+    "notAvailable": "—",
+    "emptyResource": "No {{resource}} could be found.",
+    "close": "Close"
+  },
+
+  "errors": {
+    "loginFailed": "Login failed",
+    "somethingWrong": "Something went wrong",
+    "pageNotFound": "Page Not Found"
+  },
+
+  "defaultAdminName": "Admin Manager"
+}

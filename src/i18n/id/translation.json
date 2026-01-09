@@ -1,0 +1,289 @@
+{
+  "systemSettings": {
+    "title": "Pengaturan Sistem",
+    "subtitle": "Kelola preferensi dasar sistem",
+    "languageRegion": "Bahasa & Wilayah",
+    "appearance": "Tampilan"
+  },
+
+  "actions": {
+    "toggleTheme": "Ganti Tema",
+    "toggleSidebar": "Buka / Tutup Sidebar",
+    "logout": "Keluar"
+  },
+  "form": {
+    "email": "Email",
+    "password": "Kata Sandi"
+  },
+  "login": {
+    "subtitle": "Manajemen kafe Anda, semua dalam satu tempat",
+    "submit": "Masuk",
+    "loading": "Sedang masuk...",
+    "forgotPassword": "Lupa Kata Sandi?"
+  },
+
+  "navigation": {
+    "dashboard": "Dasbor",
+    "orders": "Pesanan",
+    "menu": "Menu",
+    "settings": "Pengaturan",
+    "users": "Pengguna"
+  },
+
+  "sidebar": {
+    "subtitle": "Dasbor Manajer",
+    "orderPanel": "Panel Pesanan",
+    "orderManagement": "Manajemen Pesanan",
+    "menuManagement": "Manajemen Menu",
+    "userManagement": "Manajemen Pengguna",
+    "reports": "Laporan & Analitik",
+    "systemSettings": "Pengaturan Sistem",
+    "defaultUser": "Manajer Admin",
+    "userAvatar": "Avatar Pengguna"
+  },
+
+  "menu": {
+    "title": "Manajemen Menu",
+    "addNew": "Tambah Minuman Baru",
+    "searchPlaceholder": "Cari menu...",
+    "loading": "Memuat menu...",
+    "empty": "Menu tidak ditemukan.",
+    "toggleAvailability": "Ubah ketersediaan",
+    "confirmDelete": "Are you sure you want to delete this item?",
+    "toast": {
+      "addSuccess": "Item berhasil ditambahkan",
+      "addError": "Gagal menambahkan item"
+    },
+
+    "categories": {
+      "all": "Semua Kategori",
+      "drink": "Minuman",
+      "dessert": "Makanan Penutup"
+    },
+    "addDrink": {
+      "title": "Tambah Minuman Baru",
+      "name": "Nama Minuman",
+      "namePlaceholder": "Masukkan nama minuman",
+      "price": "Harga ($)",
+      "category": "Kategori",
+      "selectCategory": "Pilih kategori",
+      "image": "URL Gambar",
+      "description": "Deskripsi",
+      "descriptionPlaceholder": "Deskripsi singkat",
+      "available": "Tersedia",
+      "submit": "Tambah Minuman"
+    },
+
+    "availability": {
+      "all": "Semua",
+      "available": "Tersedia",
+      "unavailable": "Tidak Tersedia"
+    }
+  },
+
+  "orders": {
+    "loading": "Memuat orders...",
+    "title": "Manajemen Pesanan",
+    "subtitle": "Lacak, filter, dan ekspor pesanan terbaru Anda.",
+    "filters": "Filter Pesanan",
+    "search": "Cari pesanan...",
+    "dateRange": "Rentang Tanggal",
+    "recent": "Pesanan Terbaru",
+    "showing": "Menampilkan hasil berdasarkan filter Anda",
+    "empty": "Tidak ada pesanan yang sesuai dengan filter.",
+    "actions": "Aksi",
+
+    "guest": "Tamu",
+    "tablename": "Meja",
+    "estimate": "Perkiraan {{mins}} menit",
+    "markReady": "Tandai Siap",
+    "markDelivered": "Tandai Terkirim",
+
+    "table": {
+      "order": "Pesanan",
+      "customer": "Pelanggan",
+      "datetime": "Tanggal & Waktu",
+      "status": "Status",
+      "type": "Tipe",
+      "payment": "Pembayaran",
+      "total": "Total",
+      "actions": "Aksi"
+    },
+
+    "type": {
+      "dine-in": "Makan di Tempat",
+      "pickup": "Ambil Sendiri",
+      "delivery": "Pengantaran",
+      "unknown": "—"
+    },
+
+    "status": {
+      "preparing": "Disiapkan",
+      "ready": "Siap",
+      "delivered": "Terkirim",
+      "cancelled": "Dibatalkan"
+    },
+
+    "payment": {
+      "paid": "Dibayar",
+      "unpaid": "Belum Dibayar"
+    },
+
+    "tableHead": {
+      "order": "Pesanan #",
+      "customer": "Pelanggan",
+      "datetime": "Tanggal & Waktu",
+      "status": "Status",
+      "type": "Tipe",
+      "payment": "Pembayaran",
+      "total": "Total",
+      "actions": "Aksi"
+    },
+
+    "errors": {
+      "loadFailed": "Gagal memuat pesanan",
+      "updateFailed": "Gagal memperbarui status"
+    }
+  },
+
+  "ordersPanel": {
+    "title": "Panel Pesanan",
+    "today": "Pesanan Hari Ini",
+    "total": "Total Pesanan",
+    "search": "Cari berdasarkan nomor pesanan, nama pelanggan, atau minuman...",
+    "loading": "Memuat pesanan...",
+    "empty": "Tidak ada pesanan yang sesuai dengan filter."
+  },
+
+  "user": {
+    "create": {
+      "title": "Buat Pengguna Baru",
+      "submit": "Buat Pengguna",
+      "success": "Pengguna berhasil dibuat",
+      "error": "Gagal membuat pengguna"
+    },
+    "edit": {
+      "title": "Edit Pengguna",
+      "submit": "Simpan Perubahan",
+      "success": "Pengguna berhasil diperbarui",
+      "error": "Gagal memperbarui pengguna"
+    },
+    "fields": {
+      "name": "Nama Lengkap",
+      "namePlaceholder": "Masukkan nama lengkap",
+      "email": "Alamat Email",
+      "emailPlaceholder": "Masukkan alamat email",
+      "password": "Kata Sandi",
+      "passwordPlaceholder": "Masukkan kata sandi",
+      "role": "Peran",
+      "status": "Status",
+      "active": "Aktif",
+      "inactive": "Tidak Aktif"
+    },
+    "confirmDelete": "Apakah Anda yakin ingin menghapus pengguna ini?"
+  },
+
+  "users": {
+    "title": "Manajemen Pengguna",
+    "subtitle": "Kelola akun staf dan admin.",
+    "createuser": "Buat Pengguna",
+    "search": "Cari pengguna berdasarkan nama atau email...",
+    "tableTitle": "Data Staf & Admin",
+    "actions": "Aksi",
+    "empty": "Pengguna tidak ditemukan.",
+
+    "roles": {
+      "admin": "Admin",
+      "staff": "Staf"
+    },
+
+    "status": {
+      "active": "Aktif",
+      "inactive": "Tidak Aktif"
+    },
+
+    "stats": {
+      "total": "Total Pengguna",
+      "admins": "Admin",
+      "active": "Aktif",
+      "inactive": "Tidak Aktif"
+    },
+
+    "table": {
+      "user": "Pengguna",
+      "joinDate": "Tanggal Bergabung",
+      "role": "Peran",
+      "status": "Status",
+      "actions": "Aksi"
+    }
+  },
+
+  "filters": {
+    "status": {
+      "all": "Semua Status"
+    },
+    "sort": {
+      "newest": "Terbaru",
+      "oldest": "Terlama"
+    },
+    "type": {
+      "all": "Semua Tipe",
+      "inStore": "Di Tempat",
+      "delivery": "Pengantaran",
+      "pickup": "Ambil Sendiri"
+    },
+    "date": {
+      "today": "Hari Ini",
+      "last7": "7 Hari Terakhir",
+      "last30": "30 Hari Terakhir",
+      "custom": "Rentang Khusus"
+    }
+  },
+
+  "system": {
+    "languageLabel": "Bahasa",
+    "currencyLabel": "Mata Uang",
+    "timezoneLabel": "Zona Waktu",
+    "themeLabel": "Tema",
+
+    "language": {
+      "en": "Inggris",
+      "id": "Indonesia"
+    },
+    "currency": {
+      "usd": "USD ($)",
+      "idr": "Rupiah (Rp)"
+    },
+    "timezone": {
+      "wib": "WIB (UTC+7) – Indonesia Barat",
+      "wita": "WITA (UTC+8) – Indonesia Tengah",
+      "wit": "WIT (UTC+9) – Indonesia Timur"
+    },
+    "theme": {
+      "light": "Terang",
+      "dark": "Gelap",
+      "system": "Sistem"
+    }
+  },
+
+  "common": {
+    "save": "Simpan",
+    "cancel": "Batal",
+    "confirm": "Konfirmasi",
+    "search": "Cari",
+    "refresh": "Muat Ulang",
+    "edit": "Edit",
+    "delete": "Hapus",
+    "notAvailable": "—",
+    "emptyResource": "{{resource}} tidak ditemukan.",
+    "close": "Tutup"
+  },
+
+  "errors": {
+    "loginFailed": "Gagal masuk",
+    "somethingWrong": "Terjadi kesalahan",
+    "pageNotFound": "Halaman Tidak Ditemukan"
+  },
+
+  "defaultAdminName": "Manajer Admin"
+}

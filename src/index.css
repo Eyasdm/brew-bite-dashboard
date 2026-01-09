@@ -1,0 +1,125 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* =========================
+   Theme Tokens (LIGHT)
+   ========================= */
+:root {
+  /* Surfaces */
+  --bg: 0 0% 98%;
+  --card: 0 0% 100%;
+  --popover: 0 0% 100%;
+  --muted: 220 14% 96%;
+  --muted-soft: 210 20% 96%;
+
+  --border: 220 13% 91%;
+  --ring: 220 13% 80%;
+
+  /* text */
+  --text-strong: 222 28% 10%; /* headings */
+  --text: 222 22% 15%; /* normal text */
+  --text-muted: 220 9% 46%; /* muted */
+
+  /* Brand */
+  --primary: 24 95% 53%;
+  --primary-foreground: 0 0% 100%;
+  --primary-soft: 24 100% 95%;
+
+  /* Semantic */
+  --success: 142 71% 45%;
+  --success-foreground: 0 0% 100%;
+  --success-soft: 142 76% 94%;
+
+  --warning: 43 96% 56%;
+  --warning-foreground: 222 22% 15%;
+  --warning-soft: 45 93% 93%;
+
+  --danger: 0 84% 60%;
+  --danger-foreground: 0 0% 100%;
+  --danger-soft: 0 93% 94%;
+
+  --info: 217 91% 60%;
+  --info-foreground: 0 0% 100%;
+  --info-soft: 217 92% 95%;
+
+  /* KPI accent colors */
+  --kpi-blue: 221 83% 53%;
+  --kpi-orange: 24 95% 53%;
+  --kpi-purple: 270 84% 60%;
+  --kpi-red: 0 84% 60%;
+
+  --kpi-blue-soft: 221 92% 96%;
+  --kpi-orange-soft: 24 100% 95%;
+  --kpi-purple-soft: 270 100% 96%;
+  --kpi-red-soft: 0 93% 96%;
+
+  /* Sidebar */
+  --sidebar-bg: 0 0% 100%;
+  --sidebar-border: 220 13% 91%;
+  --sidebar-text: 222 22% 15%;
+  --sidebar-muted: 220 9% 46%;
+  --sidebar-active-bg: 220 14% 96%;
+
+  --destructive: var(--danger);
+  --destructive-foreground: var(--danger-foreground);
+}
+
+/* =========================
+   Theme Tokens (DARK)
+   - Only values change
+   - Classes stay the same
+   ========================= */
+.dark {
+  --bg: 222 22% 10%;
+  --card: 222 22% 12%;
+  --popover: 222 22% 12%;
+  --muted: 222 18% 16%;
+  --muted-soft: 217 19% 22%;
+
+  --border: 220 14% 20%;
+  --ring: 220 14% 30%;
+
+  --text-strong: 0 0% 98%; /* headings */
+  --text: 0 0% 92%; /* normal text */
+  --text-muted: 220 10% 70%; /* muted */
+
+  --primary: 24 95% 55%;
+  --primary-foreground: 0 0% 100%;
+  --primary-soft: 24 45% 20%;
+
+  --success: 142 70% 45%;
+  --success-foreground: 0 0% 100%;
+  --success-soft: 142 35% 18%;
+
+  --warning: 43 96% 56%;
+  --warning-foreground: 222 22% 10%;
+  --warning-soft: 45 35% 18%;
+
+  --danger: 0 84% 60%;
+  --danger-foreground: 0 0% 100%;
+  --danger-soft: 0 35% 18%;
+
+  --info: 217 91% 60%;
+  --info-foreground: 0 0% 100%;
+  --info-soft: 217 35% 18%;
+
+  --kpi-blue: 221 83% 60%;
+  --kpi-orange: 24 95% 55%;
+  --kpi-purple: 270 84% 70%;
+  --kpi-red: 0 84% 65%;
+
+  --kpi-blue-soft: 221 30% 18%;
+  --kpi-orange-soft: 24 30% 18%;
+  --kpi-purple-soft: 270 30% 18%;
+  --kpi-red-soft: 0 30% 18%;
+
+  --sidebar-bg: 222 22% 12%;
+  --sidebar-border: 220 14% 20%;
+  --sidebar-text: 0 0% 98%;
+  --sidebar-muted: 220 10% 70%;
+  --sidebar-active-bg: 222 18% 16%;
+
+  --destructive: var(--danger);
+  --destructive-foreground: var(--danger-foreground);
+}
