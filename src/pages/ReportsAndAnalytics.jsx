@@ -2,6 +2,7 @@ import { useMemo, useState } from "react";
 import SelectMenu from "../components/SelectMenu";
 
 import { useReportsData } from "../hooks/useReportsData";
+import { useProductsData } from "../hooks/useProductData";
 
 import {
   buildStats,
@@ -13,56 +14,66 @@ import {
 import ReportsStats from "../components/reports/ReportsStats";
 import ReportsCharts from "../components/charts/ReportsCharts";
 import ReportsTabs from "../components/reports/ReportsTabs";
-import { useProductsData } from "../hooks/useProductData";
 
-const DEURATION_OPTIONS = [
+/* ------------------ constants ------------------ */
+const RANGE_OPTIONS = [
   { value: "week", label: "This Week" },
   { value: "month", label: "This Month" },
   { value: "year", label: "This Year" },
   { value: "all", label: "All Time" },
 ];
 
+const TABS = {
+  OVERVIEW: "overview",
+};
+
 export default function ReportsAndAnalytics() {
+  /* ------------------ UI state ------------------ */
   const [range, setRange] = useState("all");
-  const [tab, setTab] = useState("overview");
+  const [activeTab, setActiveTab] = useState(TABS.OVERVIEW);
+
+  /* ------------------ data ------------------ */
+  const { orders, loading: ordersLoading } = useReportsData(range);
   const { items, loading: productsLoading } = useProductsData(range);
 
-  const { orders, loading } = useReportsData(range);
+  const loading = ordersLoading || productsLoading;
 
+  /* ------------------ aggregations ------------------ */
   const stats = useMemo(() => buildStats(orders), [orders]);
   const dailyOrdersData = useMemo(() => buildDailyOrdersData(orders), [orders]);
   const revenueTrendData = useMemo(
     () => buildRevenueTrendData(orders),
-    [orders]
+    [orders],
   );
   const peakHoursData = useMemo(() => buildPeakHoursData(orders), [orders]);
 
+  /* =====================================================
+   * Render
+   * =================================================== */
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
-        <h1 className="text-xl font-semibold text-text">Reports & Analytics</h1>
+      <header className="flex items-center justify-between">
+        <h1 className="text-xl font-semibold">Reports & Analytics</h1>
 
-        <SelectMenu
-          value={range}
-          onChange={setRange}
-          options={DEURATION_OPTIONS}
-        />
-      </div>
+        <SelectMenu value={range} onChange={setRange} options={RANGE_OPTIONS} />
+      </header>
 
       {/* Stats */}
       <ReportsStats stats={stats} loading={loading} />
-      <ReportsTabs value={tab} onChange={setTab} />
+
+      {/* Tabs */}
+      <ReportsTabs value={activeTab} onChange={setActiveTab} />
 
       {/* Charts */}
       <ReportsCharts
-        tab={tab}
+        tab={activeTab}
         orders={orders}
         items={items}
         dailyOrdersData={dailyOrdersData}
         revenueTrendData={revenueTrendData}
         peakHoursData={peakHoursData}
-        loading={loading || productsLoading}
+        loading={loading}
       />
     </div>
   );

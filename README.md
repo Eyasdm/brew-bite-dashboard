@@ -1,48 +1,40 @@
 # Brew-Bite Dashboard ☕️
 
-**Brew-Bite Dashboard** is a modern and responsive admin panel built to manage cafe and restaurant operations efficiently.
-The system provides real-time order tracking, order status management, menu control, user management, and analytics
-through a clean and intuitive interface.
+**Brew-Bite Dashboard** is a modern admin dashboard for managing cafe and restaurant operations.
+The project focuses on clean code, scalability, and real-world POS (Point of Sale) workflows.
 
-This dashboard is designed to be fast, scalable, and easy to maintain, making it suitable for real-world POS
-(Point of Sale) and order management systems.
+It includes order tracking, menu management, user roles, and analytics,
+built with a clear and maintainable frontend architecture.
 
 ---
 
 ## ✨ Features
 
 - 📦 **Order Panel**
-
-  - View and track daily orders in real time
+  - Real-time order tracking
   - Order status management (Preparing, Ready, Delivered)
-  - Search and filter orders by status, time, or customer
+  - Search and filter orders
 
 - 🛒 **Order Management**
-
-  - Detailed order view
+  - View order details
   - Payment status tracking
   - Pickup and delivery support
 
 - 🍽 **Menu Management**
-
-  - Add, update, and remove menu items
+  - Add, update, and delete menu items
   - Control item availability
 
 - 👥 **User Management**
-
   - Manage staff and system users
-  - Role-based access (admin / manager)
+  - Role-based access control (Admin / Manager)
 
 - 📊 **Reports & Analytics**
-
   - Daily order statistics
-  - Performance insights
   - Sales overview
 
 - 🎨 **Modern UI**
-  - Clean dashboard layout
-  - Fully responsive design
-  - Optimized for desktop and tablet use
+  - Responsive dashboard layout
+  - Optimized for desktop and tablet
 
 ---
 
@@ -50,24 +42,51 @@ This dashboard is designed to be fast, scalable, and easy to maintain, making it
 
 ### Frontend
 
-- **React** – Component-based UI development
-- **React Query (TanStack Query)** – Server state management and caching
-- **Tailwind CSS** – Utility-first styling
-- **Vite** – Fast development and build tool
-- **React Router** – Client-side routing
+- **React**
+- **Vite**
+- **React Router**
+- **TanStack Query (React Query)**
+- **Tailwind CSS**
 
 ### Backend
 
 - **Supabase**
   - Authentication
-  - Database (PostgreSQL)
+  - PostgreSQL Database
   - Real-time subscriptions
   - Storage
 
 ---
 
-## 🔐 Authentication & Data
+## 🔐 Authentication
 
-- User authentication handled via **Supabase Auth**
-- Real-time order updates using **Supabase subscriptions**
-- Secure API access with environment variables
+- Authentication is handled using **Supabase Auth**
+- Email & Password login
+- Role-based access using user profiles
+- Auth state is managed globally using React Context
+
+---
+
+## 📁 Project Structure
+
+```txt
+src/
+├── assets/          # Static assets (images, icons)
+├── components/      # Reusable UI components
+├── pages/           # Application pages
+├── routes/          # Route definitions & guards
+├── auth/            # Authentication logic (context & hooks)
+│   ├── AuthProvider.jsx
+│   ├── useAuthSession.js
+│   └── useAuthProfile.js
+├── services/        # External services (Supabase, API calls)
+│   ├── supabase.js
+│   ├── users.service.js
+│   ├── orders.service.js
+│   └── menu.service.js
+├── hooks/           # Custom reusable hooks
+├── utils/           # Helper functions
+├── state/           # Global state (if needed)
+├── App.jsx
+└── main.jsx
+```

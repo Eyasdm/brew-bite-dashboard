@@ -5,6 +5,9 @@ export function formatCurrency(value, currency = "USD") {
     minimumFractionDigits: 2,
   }).format(value || 0);
 }
+export function formatMoney(value) {
+  return `$${Number(value || 0).toFixed(2)}`;
+}
 
 export function formatNumber(value) {
   return new Intl.NumberFormat("en-US").format(value || 0);

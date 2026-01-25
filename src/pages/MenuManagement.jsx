@@ -77,7 +77,7 @@ export default function MenuManagement() {
 
     updateMutation.mutate(
       { id: activeItem.id, payload: data },
-      { onSuccess: () => setActiveItem(null) }
+      { onSuccess: () => setActiveItem(null) },
     );
   }
 

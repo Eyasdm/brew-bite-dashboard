@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { Calendar, MoreHorizontal, Search as SearchIcon } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
@@ -8,23 +8,15 @@ import {
   getOrderStatusOptions,
   getOrderTypeOptions,
 } from "../constants/filters.constants";
-import { fetchOrders } from "../services/orders";
-import { getStartTimestamp } from "../utils/formaters";
+import { formatMoney, getStartTimestamp } from "../utils/formaters";
+import { useOrders } from "../hooks/useOrders";
 
-/* -----------------------------------------------------
- * Utility helpers
- * --------------------------------------------------- */
+/* ------------------ helpers ------------------ */
 function cx(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-function formatMoney(value) {
-  return `$${Number(value || 0).toFixed(2)}`;
-}
-
-/* -----------------------------------------------------
- * Badge component
- * --------------------------------------------------- */
+/* ------------------ badge ------------------ */
 function Badge({ tone = "gray", children }) {
   const tones = {
     gray: "bg-muted text-text",
@@ -38,7 +30,7 @@ function Badge({ tone = "gray", children }) {
     <span
       className={cx(
         "inline-flex items-center rounded-full px-2.5 py-1 text-xs font-medium",
-        tones[tone]
+        tones[tone],
       )}
     >
       {children}
@@ -46,10 +38,8 @@ function Badge({ tone = "gray", children }) {
   );
 }
 
-/* -----------------------------------------------------
- * Status / Payment badge mappers
- * --------------------------------------------------- */
-function statusBadge(status, t) {
+/* ------------------ badge mappers ------------------ */
+function getStatusBadge(status, t) {
   switch (status) {
     case "preparing":
       return { tone: "yellow", label: t("orders.status.preparing") };
@@ -64,7 +54,7 @@ function statusBadge(status, t) {
   }
 }
 
-function paymentBadge(isPaid, t) {
+function getPaymentBadge(isPaid, t) {
   return isPaid
     ? { tone: "green", label: t("orders.payment.paid") }
     : { tone: "red", label: t("orders.payment.unpaid") };
@@ -76,64 +66,32 @@ function paymentBadge(isPaid, t) {
 export default function OrderManagement() {
   const { t } = useTranslation();
 
-  /* -------------------------------
-   * Filters state
-   * ----------------------------- */
+  /* ------------------ filters ------------------ */
   const [search, setSearch] = useState("");
   const [status, setStatus] = useState("all");
   const [type, setType] = useState("all");
   const [dateRange, setDateRange] = useState("7d");
 
-  /* -------------------------------
-   * Data state
-   * ----------------------------- */
-  const [orders, setOrders] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
+  /* ------------------ data (React Query) ------------------ */
+  const { data: orders = [], isLoading, isError, error } = useOrders();
 
-  /* -------------------------------
-   * Load orders from Supabase
-   * ----------------------------- */
-  useEffect(() => {
-    async function loadOrders() {
-      try {
-        setLoading(true);
-        setError("");
-        const data = await fetchOrders();
-        setOrders(data);
-      } catch (err) {
-        setError(err?.message || t("orders.errors.loadFailed"));
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    loadOrders();
-  }, [t]);
-
-  /* -------------------------------
-   * Filtered orders (search + filters)
-   * ----------------------------- */
+  /* ------------------ filtering ------------------ */
   const filteredOrders = useMemo(() => {
-    const q = search.trim().toLowerCase();
+    const query = search.trim().toLowerCase();
     const startTime = getStartTimestamp(dateRange);
 
-    return orders.filter((o) => {
-      // 1. Search filter
+    return orders.filter((order) => {
       const matchesSearch =
-        !q ||
-        o.orderNo?.toLowerCase().includes(q) ||
-        o.customerName?.toLowerCase().includes(q) ||
-        o.itemTitle?.toLowerCase().includes(q);
+        !query ||
+        order.orderNo?.toLowerCase().includes(query) ||
+        order.customerName?.toLowerCase().includes(query) ||
+        order.itemTitle?.toLowerCase().includes(query);
 
-      // 2. Status filter
-      const matchesStatus = status === "all" ? true : o.status === status;
+      const matchesStatus = status === "all" || order.status === status;
 
-      // 3. Type filter
-      const matchesType = type === "all" ? true : o.type === type;
+      const matchesType = type === "all" || order.type === type;
 
-      // 4. Date range filter
-      const matchesDate = !startTime || o.createdAt >= startTime;
+      const matchesDate = !startTime || order.createdAt >= startTime;
 
       return matchesSearch && matchesStatus && matchesType && matchesDate;
     });
@@ -143,52 +101,40 @@ export default function OrderManagement() {
    * Render
    * =================================================== */
   return (
-    <div className="space-y-6 max-w-full">
-      {/* ================= Header ================= */}
-      <div>
-        <h1 className="text-xl font-semibold text-text-strong">
-          {t("orders.title")}
-        </h1>
+    <div className="max-w-full space-y-6">
+      {/* Header */}
+      <header>
+        <h1 className="text-xl font-semibold">{t("orders.title")}</h1>
         <p className="mt-1 text-sm text-text-muted">{t("orders.subtitle")}</p>
-      </div>
+      </header>
 
-      {/* ================= Filters ================= */}
-      <section className="rounded-2xl border border-border bg-card p-4">
-        <div className="text-sm font-medium text-text-strong">
-          {t("orders.filters")}
-        </div>
+      {/* Filters */}
+      <section className="rounded-2xl border bg-card p-4">
+        <div className="text-sm font-medium">{t("orders.filters")}</div>
 
         <div className="mt-4 grid grid-cols-1 gap-3 lg:grid-cols-[1fr_180px_180px_220px]">
-          {/* Search */}
-          <div>
-            <div className="flex h-11 items-center gap-2 rounded-xl border border-border bg-bg px-3">
-              <SearchIcon className="h-4 w-4 text-text-muted" />
-              <input
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                placeholder={t("orders.search")}
-                className="h-full w-full bg-transparent text-sm outline-none"
-              />
-            </div>
+          <div className="flex h-11 items-center gap-2 rounded-xl border bg-bg px-3">
+            <SearchIcon className="h-4 w-4 text-text-muted" />
+            <input
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder={t("orders.search")}
+              className="h-full w-full bg-transparent text-sm outline-none"
+            />
           </div>
 
-          {/* Status */}
           <SelectMenu
             value={status}
             onChange={setStatus}
             options={getOrderStatusOptions(t)}
-            className="w-full"
           />
 
-          {/* Type */}
           <SelectMenu
             value={type}
             onChange={setType}
             options={getOrderTypeOptions(t)}
-            className="w-full"
           />
 
-          {/* Date range */}
           <div className="flex items-center gap-2">
             <SelectMenu
               value={dateRange}
@@ -199,8 +145,7 @@ export default function OrderManagement() {
 
             <button
               type="button"
-              className="h-11 w-11 inline-flex items-center justify-center rounded-xl border border-border bg-bg hover:bg-muted transition"
-              title={t("orders.dateRange")}
+              className="h-11 w-11 inline-flex items-center justify-center rounded-xl border bg-bg hover:bg-muted transition"
             >
               <Calendar className="h-4 w-4 text-text-muted" />
             </button>
@@ -208,17 +153,16 @@ export default function OrderManagement() {
         </div>
       </section>
 
-      {/* ================= Table ================= */}
-      <section className="rounded-2xl border border-border bg-card overflow-hidden">
-        <div className="flex items-center justify-between px-4 py-4 border-b">
+      {/* Table */}
+      <section className="overflow-hidden rounded-2xl border bg-card">
+        <div className="flex items-center justify-between border-b px-4 py-4">
           <div className="text-sm font-medium">
             {t("orders.recent")} ({filteredOrders.length})
           </div>
-          <div className="text-xs text-text-muted">{t("orders.showing")}</div>
         </div>
 
         <div className="w-full overflow-x-auto">
-          <table className="w-full min-w-[900px]">
+          <table className="min-w-[900px] w-full">
             <thead>
               <tr className="text-xs text-text-muted">
                 <th className="px-4 py-3">{t("orders.table.order")}</th>
@@ -234,8 +178,8 @@ export default function OrderManagement() {
               </tr>
             </thead>
 
-            <tbody className="divide-y divide-border">
-              {loading && (
+            <tbody className="divide-y">
+              {isLoading && (
                 <tr>
                   <td colSpan={8} className="px-4 py-10 text-center text-sm">
                     {t("orders.loading")}
@@ -243,30 +187,34 @@ export default function OrderManagement() {
                 </tr>
               )}
 
-              {!loading &&
-                filteredOrders.map((o) => {
-                  const s = statusBadge(o.status, t);
-                  const p = paymentBadge(o.paid, t);
+              {!isLoading &&
+                filteredOrders.map((order) => {
+                  const s = getStatusBadge(order.status, t);
+                  const p = getPaymentBadge(order.paid, t);
 
                   return (
-                    <tr key={o.orderNo} className="text-sm">
-                      <td className="px-4 py-3 font-medium">#{o.orderNo}</td>
-                      <td className="px-4 py-3">{o.customerName}</td>
+                    <tr key={order.orderNo} className="text-sm">
+                      <td className="px-4 py-3 font-medium">
+                        #{order.orderNo}
+                      </td>
+                      <td className="px-4 py-3">{order.customerName}</td>
                       <td className="px-4 py-3 text-text-muted">
-                        {new Date(o.createdAt).toLocaleString()}
+                        {new Date(order.createdAt).toLocaleString()}
                       </td>
                       <td className="px-4 py-3">
                         <Badge tone={s.tone}>{s.label}</Badge>
                       </td>
-                      <td className="px-4 py-3 capitalize">{o.type}</td>
+                      <td className="px-4 py-3 capitalize">{order.type}</td>
                       <td className="px-4 py-3">
                         <Badge tone={p.tone}>{p.label}</Badge>
                       </td>
-                      <td className="px-4 py-3">{formatMoney(o.totalPrice)}</td>
+                      <td className="px-4 py-3">
+                        {formatMoney(order.totalPrice)}
+                      </td>
                       <td className="px-4 py-3 text-right">
                         <button
                           className="h-9 w-9 inline-flex items-center justify-center rounded-xl border"
-                          onClick={() => console.log("Actions:", o.id)}
+                          onClick={() => console.log("Actions:", order.id)}
                         >
                           <MoreHorizontal className="h-4 w-4" />
                         </button>
@@ -275,7 +223,7 @@ export default function OrderManagement() {
                   );
                 })}
 
-              {!loading && filteredOrders.length === 0 && (
+              {!isLoading && filteredOrders.length === 0 && (
                 <tr>
                   <td colSpan={8} className="px-4 py-10 text-center text-sm">
                     {t("orders.empty")}
@@ -286,8 +234,10 @@ export default function OrderManagement() {
           </table>
         </div>
 
-        {error && (
-          <div className="px-4 py-3 text-sm text-red-600 border-t">{error}</div>
+        {isError && (
+          <div className="border-t px-4 py-3 text-sm text-red-600">
+            {error?.message || t("orders.errors.loadFailed")}
+          </div>
         )}
       </section>
     </div>

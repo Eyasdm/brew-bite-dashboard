@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useAuth } from "../state/auth";
+import { useAuth } from "../state/AuthProvider";
 import { useNavigate, useLocation } from "react-router-dom";
 import toast from "react-hot-toast";
 import { useDarkMode } from "../context/DarkModeContext";
@@ -16,17 +16,15 @@ export default function Login() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const [email, setEmail] = useState("Eyasdm2@gmail.com");
-  const [password, setPassword] = useState("Adam1122");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    if (initLoading) return;
-    if (isAuthenticated) {
-      const to = location.state?.from || "/order-panel";
-      navigate(to, { replace: true });
+    if (!initLoading && isAuthenticated) {
+      navigate(location.state?.from || "/order-panel", { replace: true });
     }
-  }, [isAuthenticated, initLoading, navigate, location]);
+  }, [isAuthenticated, initLoading, navigate, location.state]);
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -116,13 +114,6 @@ export default function Login() {
             {loading ? t("login.loading") : t("login.submit")}
           </button>
         </form>
-
-        {/* Footer */}
-        <div className="text-center mt-4">
-          <button className="text-sm text-primary hover:underline">
-            {t("login.forgotPassword")}
-          </button>
-        </div>
       </div>
     </div>
   );

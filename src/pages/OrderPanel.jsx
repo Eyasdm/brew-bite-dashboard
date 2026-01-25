@@ -1,5 +1,3 @@
-// The page should have dynamic data not mock data
-
 import {
   CheckCircle2,
   Clock3,
@@ -8,71 +6,55 @@ import {
   Search,
   Truck,
 } from "lucide-react";
-import { useMemo, useState, useEffect } from "react";
+import { useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
+
 import OrderCard from "../components/OrderCard";
 import StatCard from "../components/StatCard";
 import SelectMenu from "../components/SelectMenu";
-import { fetchOrders, updateOrderStatus } from "../services/orders";
 import {
   getOrderSortOptions,
   getOrderStatusOptions,
 } from "../constants/filters.constants";
-import { loadWithState } from "../utils/loadWithState";
-import { useTranslation } from "react-i18next";
+import { useOrderPanel } from "../hooks/useOrderPanel";
 
 export default function OrderPanel() {
   const { t } = useTranslation();
 
+  /* ------------------ filters ------------------ */
   const [query, setQuery] = useState("");
   const [status, setStatus] = useState("all");
   const [sort, setSort] = useState("newest");
 
-  const [orders, setOrders] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [errMsg, setErrMsg] = useState("");
+  /* ------------------ data ------------------ */
+  const { orders, isLoading, isError, error, refetch, updateStatus, updating } =
+    useOrderPanel();
 
-  async function loadOrders() {
-    await loadWithState({
-      loader: fetchOrders,
-      setData: setOrders,
-      setLoading,
-      setError: setErrMsg,
-      errorMessage: t("orders.errors.loadFailed"),
-    });
-  }
+  /* ------------------ time label ------------------ */
+  const nowLabel = useMemo(
+    () =>
+      new Date().toLocaleTimeString([], {
+        hour: "2-digit",
+        minute: "2-digit",
+      }),
+    [],
+  );
 
-  useEffect(() => {
-    loadOrders();
-  }, []);
-
-  async function onChangeStatus(id, nextStatus) {
-    const prev = orders;
-    setOrders((p) =>
-      p.map((o) => (o.id === id ? { ...o, status: nextStatus } : o))
-    );
-
-    try {
-      await updateOrderStatus(id, nextStatus);
-    } catch (e) {
-      setOrders(prev);
-      setErrMsg(e?.message || t("orders.errors.updateFailed"));
-    }
-  }
-
-  const nowLabel = useMemo(() => {
-    return new Date().toLocaleTimeString([], {
-      hour: "2-digit",
-      minute: "2-digit",
-    });
-  }, []);
-
+  /* ------------------ stats ------------------ */
   const stats = useMemo(() => {
     const preparing = orders.filter((o) => o.status === "preparing").length;
     const ready = orders.filter((o) => o.status === "ready").length;
     const delivered = orders.filter((o) => o.status === "delivered").length;
-    return { preparing, ready, delivered, total: orders.length };
+
+    return {
+      preparing,
+      ready,
+      delivered,
+      total: orders.length,
+    };
   }, [orders]);
 
+  /* ------------------ filtering ------------------ */
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
     let data = [...orders];
@@ -84,7 +66,8 @@ export default function OrderPanel() {
     if (q) {
       data = data.filter((o) => {
         const itemsText = o.items?.map((i) => i.title).join(" ");
-        const hay = [
+
+        const haystack = [
           o.orderNo,
           o.customerName,
           o.customerPhone,
@@ -95,7 +78,7 @@ export default function OrderPanel() {
           .join(" ")
           .toLowerCase();
 
-        return hay.includes(q);
+        return haystack.includes(q);
       });
     }
 
@@ -107,36 +90,46 @@ export default function OrderPanel() {
     return data;
   }, [orders, query, status, sort]);
 
+  /* ------------------ handlers ------------------ */
+  async function handleChangeStatus(id, nextStatus) {
+    try {
+      await updateStatus({ id, status: nextStatus });
+    } catch {
+      // error handled by react-query rollback
+    }
+  }
+
+  /* =====================================================
+   * Render
+   * =================================================== */
   return (
     <div className="space-y-4">
-      {/* header */}
-      <div className="rounded-2xl border border-border bg-card px-4 py-3 flex items-center justify-between">
+      {/* Header */}
+      <div className="flex items-center justify-between rounded-2xl border bg-card px-4 py-3">
         <div>
-          <h1 className="text-lg font-semibold text-text">
-            {t("ordersPanel.title")}
-          </h1>
+          <h1 className="text-lg font-semibold">{t("ordersPanel.title")}</h1>
           <p className="text-sm text-text-muted">
             {nowLabel} • {t("ordersPanel.today")}: {stats.total}
           </p>
 
-          {errMsg ? (
-            <p className="mt-1 text-sm text-red-600">{errMsg}</p>
-          ) : null}
+          {isError && (
+            <p className="mt-1 text-sm text-red-600">
+              {error?.message || t("orders.errors.loadFailed")}
+            </p>
+          )}
         </div>
 
         <button
           type="button"
-          onClick={loadOrders}
-          className="h-9 w-9 grid place-items-center rounded-xl border border-border bg-card text-text-muted hover:bg-muted hover:text-text transition"
-          aria-label={t("common.refresh")}
-          title={t("common.refresh")}
+          onClick={refetch}
+          className="h-9 w-9 grid place-items-center rounded-xl border bg-card text-text-muted hover:bg-muted transition"
         >
-          <RefreshCw className={`h-4 w-4 ${loading ? "animate-spin" : ""}`} />
+          <RefreshCw className={`h-4 w-4 ${isLoading ? "animate-spin" : ""}`} />
         </button>
       </div>
 
-      {/* stats */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      {/* Stats */}
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <StatCard
           title={t("orders.status.preparing")}
           value={stats.preparing}
@@ -163,16 +156,16 @@ export default function OrderPanel() {
         />
       </div>
 
-      {/* filters */}
-      <div className="rounded-2xl border border-border bg-card p-4">
-        <div className="grid grid-cols-1 lg:grid-cols-[1fr_220px_220px] gap-3">
+      {/* Filters */}
+      <div className="rounded-2xl border bg-card p-4">
+        <div className="grid grid-cols-1 gap-3 lg:grid-cols-[1fr_220px_220px]">
           <div className="relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-text-muted" />
+            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-text-muted" />
             <input
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder={t("ordersPanel.search")}
-              className="h-11 w-full rounded-xl border border-border bg-bg pl-10 pr-3 text-sm text-text placeholder:text-text-muted outline-none focus:ring-2 focus:ring-ring"
+              className="h-11 w-full rounded-xl border bg-bg pl-10 pr-3 text-sm outline-none"
             />
           </div>
 
@@ -180,21 +173,20 @@ export default function OrderPanel() {
             value={status}
             onChange={setStatus}
             options={getOrderStatusOptions(t)}
-            minWidth={220}
           />
+
           <SelectMenu
             value={sort}
             onChange={setSort}
             options={getOrderSortOptions(t)}
-            minWidth={220}
           />
         </div>
       </div>
 
-      {/* orders */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-        {loading ? (
-          <div className="lg:col-span-2 rounded-2xl border border-border bg-card p-10 text-center text-sm text-text-muted">
+      {/* Orders */}
+      <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+        {isLoading ? (
+          <div className="lg:col-span-2 rounded-2xl border bg-card p-10 text-center text-sm">
             {t("ordersPanel.loading")}
           </div>
         ) : (
@@ -203,12 +195,13 @@ export default function OrderPanel() {
               <OrderCard
                 key={order.id}
                 order={order}
-                onChangeStatus={onChangeStatus}
+                loading={updating}
+                onChangeStatus={handleChangeStatus}
               />
             ))}
 
-            {!filtered.length ? (
-              <div className="lg:col-span-2 rounded-2xl border border-border bg-card p-10 text-center">
+            {!filtered.length && (
+              <div className="lg:col-span-2 rounded-2xl border bg-card p-10 text-center">
                 <div className="mx-auto h-12 w-12 rounded-2xl bg-muted grid place-items-center">
                   <Coffee className="h-6 w-6 text-text-muted" />
                 </div>
@@ -216,7 +209,7 @@ export default function OrderPanel() {
                   {t("ordersPanel.empty")}
                 </p>
               </div>
-            ) : null}
+            )}
           </>
         )}
       </div>

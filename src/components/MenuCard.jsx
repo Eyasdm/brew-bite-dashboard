@@ -1,8 +1,11 @@
 import { Pencil, Trash2 } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { formatCurrency } from "../utils/formatCurrency";
+import { useCurrency } from "../context/CurrencyContext";
 
 export default function MenuCard({ item, onToggle, onEdit, onDelete }) {
   const { t } = useTranslation();
+  const { currency } = useCurrency();
 
   return (
     <div className="rounded-2xl border border-border bg-card shadow-sm overflow-hidden">
@@ -30,8 +33,8 @@ export default function MenuCard({ item, onToggle, onEdit, onDelete }) {
       <div className="p-4 space-y-3">
         <div className="flex items-start justify-between gap-2">
           <h3 className="text-sm font-semibold text-text">{item.name}</h3>
-          <span className="text-sm font-semibold text-primary">
-            ${item.price}
+          <span className="text-sm font-semibold">
+            {formatCurrency(item.price, currency)}
           </span>
         </div>
 

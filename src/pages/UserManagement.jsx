@@ -38,7 +38,7 @@ function Badge({ tone = "gray", children }) {
     <span
       className={cx(
         "inline-flex items-center rounded-full px-2.5 py-1 text-xs font-medium",
-        tones[tone] ?? tones.gray
+        tones[tone] ?? tones.gray,
       )}
     >
       {children}
@@ -47,37 +47,35 @@ function Badge({ tone = "gray", children }) {
 }
 
 /* ================= badge mappers ================= */
-function roleBadge(role, t) {
-  if (role === "admin") {
-    return { tone: "purple", label: t("users.roles.admin") };
-  }
-  return { tone: "blue", label: t("users.roles.staff") };
+function getRoleBadge(role, t) {
+  return role === "admin"
+    ? { tone: "purple", label: t("users.roles.admin") }
+    : { tone: "blue", label: t("users.roles.staff") };
 }
 
-function statusBadge(isActive, t) {
-  if (isActive) {
-    return { tone: "green", label: t("users.status.active") };
-  }
-  return { tone: "red", label: t("users.status.inactive") };
+function getStatusBadge(isActive, t) {
+  return isActive
+    ? { tone: "green", label: t("users.status.active") }
+    : { tone: "red", label: t("users.status.inactive") };
 }
 
 /* ================= component ================= */
 export default function UserManagement() {
   const { t } = useTranslation();
 
-  // queries & mutations
+  /* ------------------ data ------------------ */
   const { data: users = [], error } = useUsers();
-  const createMutation = useCreateUser();
-  const updateMutation = useUpdateUser();
-  const deleteMutation = useDeleteUser();
+  const createUser = useCreateUser();
+  const updateUser = useUpdateUser();
+  const deleteUser = useDeleteUser();
 
-  // UI state
+  /* ------------------ UI state ------------------ */
   const [search, setSearch] = useState("");
   const [openAdd, setOpenAdd] = useState(false);
   const [editingUser, setEditingUser] = useState(null);
   const [openMenuId, setOpenMenuId] = useState(null);
 
-  /* ---------- filtering ---------- */
+  /* ------------------ filtering ------------------ */
   const filteredUsers = useMemo(() => {
     const q = search.trim().toLowerCase();
     if (!q) return users;
@@ -85,11 +83,11 @@ export default function UserManagement() {
     return users.filter(
       (u) =>
         u.full_name?.toLowerCase().includes(q) ||
-        u.email?.toLowerCase().includes(q)
+        u.email?.toLowerCase().includes(q),
     );
   }, [users, search]);
 
-  /* ---------- stats ---------- */
+  /* ------------------ stats ------------------ */
   const stats = useMemo(() => {
     return {
       total: users.length,
@@ -99,10 +97,21 @@ export default function UserManagement() {
     };
   }, [users]);
 
+  /* ------------------ handlers ------------------ */
+  function handleDeleteUser(userId) {
+    if (confirm(t("user.confirmDelete"))) {
+      deleteUser.mutate(userId);
+    }
+    setOpenMenuId(null);
+  }
+
+  /* =====================================================
+   * Render
+   * =================================================== */
   return (
     <div className="space-y-6">
-      {/* ================= header ================= */}
-      <div className="flex items-center justify-between gap-3">
+      {/* Header */}
+      <header className="flex items-center justify-between gap-3">
         <div>
           <h1 className="text-xl font-semibold">{t("users.title")}</h1>
           <p className="mt-1 text-sm text-text-muted">{t("users.subtitle")}</p>
@@ -115,16 +124,16 @@ export default function UserManagement() {
           <Plus className="h-4 w-4" />
           {t("users.createuser")}
         </button>
-      </div>
+      </header>
 
-      {/* ================= error ================= */}
+      {/* Error */}
       {error && (
         <div className="rounded-xl bg-red-50 p-3 text-sm text-red-600">
           {t("errors.loadUsersFailed")}
         </div>
       )}
 
-      {/* ================= stats ================= */}
+      {/* Stats */}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <StatCard
           title={t("users.stats.total")}
@@ -148,7 +157,7 @@ export default function UserManagement() {
         />
       </div>
 
-      {/* ================= search ================= */}
+      {/* Search */}
       <div className="rounded-2xl border bg-card p-4">
         <div className="flex h-11 items-center gap-2 rounded-xl border px-3">
           <Search className="h-4 w-4 text-text-muted" />
@@ -161,7 +170,7 @@ export default function UserManagement() {
         </div>
       </div>
 
-      {/* ================= table ================= */}
+      {/* Table */}
       <section className="rounded-2xl border bg-card">
         <div className="border-b px-4 py-4 text-sm font-medium">
           {t("users.tableTitle")} ({filteredUsers.length})
@@ -170,8 +179,8 @@ export default function UserManagement() {
         <table className="w-full min-w-[900px]">
           <tbody className="divide-y">
             {filteredUsers.map((u) => {
-              const role = roleBadge(u.role, t);
-              const status = statusBadge(u.is_active, t);
+              const role = getRoleBadge(u.role, t);
+              const status = getStatusBadge(u.is_active, t);
 
               return (
                 <tr key={u.id} className="text-sm">
@@ -192,8 +201,8 @@ export default function UserManagement() {
                     <Badge tone={status.tone}>{status.label}</Badge>
                   </td>
 
-                  {/* ===== actions ===== */}
-                  <td className="px-4 py-3 text-right relative">
+                  {/* Actions */}
+                  <td className="relative px-4 py-3 text-right">
                     <button
                       onClick={() =>
                         setOpenMenuId(openMenuId === u.id ? null : u.id)
@@ -216,12 +225,7 @@ export default function UserManagement() {
                         </button>
 
                         <button
-                          onClick={() => {
-                            if (confirm(t("user.confirmDelete"))) {
-                              deleteMutation.mutate(u.id);
-                            }
-                            setOpenMenuId(null);
-                          }}
+                          onClick={() => handleDeleteUser(u.id)}
                           className="block w-full px-3 py-2 text-left text-sm text-red-600 hover:bg-red-50"
                         >
                           {t("common.delete")}
@@ -236,14 +240,14 @@ export default function UserManagement() {
         </table>
       </section>
 
-      {/* ================= modals ================= */}
+      {/* Modals */}
       <AddEditUserModal
         open={openAdd}
         mode="add"
-        loading={createMutation.isLoading}
+        loading={createUser.isLoading}
         onClose={() => setOpenAdd(false)}
         onSubmit={(data) =>
-          createMutation.mutate(data, {
+          createUser.mutate(data, {
             onSuccess: () => setOpenAdd(false),
           })
         }
@@ -253,12 +257,12 @@ export default function UserManagement() {
         open={!!editingUser}
         mode="edit"
         initialData={editingUser}
-        loading={updateMutation.isLoading}
+        loading={updateUser.isLoading}
         onClose={() => setEditingUser(null)}
         onSubmit={(data) =>
-          updateMutation.mutate(
+          updateUser.mutate(
             { id: editingUser.id, payload: data },
-            { onSuccess: () => setEditingUser(null) }
+            { onSuccess: () => setEditingUser(null) },
           )
         }
       />

@@ -1,7 +1,7 @@
 import { LogOut, Moon, PanelLeft, Sun } from "lucide-react";
 import { useState } from "react";
 import { Outlet } from "react-router-dom";
-import { useAuth } from "../state/auth";
+import { useAuth } from "../state/AuthProvider";
 import Sidebar from "../components/Sidebar";
 import { useDarkMode } from "../context/DarkModeContext";
 import { useTranslation } from "react-i18next";
