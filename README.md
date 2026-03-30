@@ -8,6 +8,10 @@ built with a clear and maintainable frontend architecture.
 
 ---
 
+## Demo account
+Email: Eyasdm2@gmail.com
+Password: Adam1122
+
 ## ✨ Features
 
 - 📦 **Order Panel**
