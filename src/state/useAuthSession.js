@@ -4,13 +4,13 @@ import { supabase } from "../services/supabase";
 export function useAuthSession() {
   const [session, setSession] = useState(null);
   const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [initLoading, setInitLoading] = useState(true);
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => {
       setSession(data.session ?? null);
       setUser(data.session?.user ?? null);
-      setLoading(false);
+      setInitLoading(false);
     });
 
     const { data: listener } = supabase.auth.onAuthStateChange(
@@ -35,7 +35,7 @@ export function useAuthSession() {
     session,
     user,
     isAuthenticated: !!session,
-    loading,
+    initLoading,
     login,
     logout,
   };
