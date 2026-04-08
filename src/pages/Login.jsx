@@ -8,7 +8,7 @@ import Logo from "../components/Logo";
 import { useTranslation } from "react-i18next";
 
 // ─── Demo credentials ────────────────────────────────────────────────────────
-const DEMO_EMAIL = "demo@brewbite.app";
+const DEMO_EMAIL = "demo@brewbite-pos.app";
 const DEMO_PASSWORD = "demo1234";
 // ─────────────────────────────────────────────────────────────────────────────
 
