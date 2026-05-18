@@ -15,8 +15,8 @@
 ---
 
 ## Demo account
-Email: Eyasdm2@gmail.com
-Password: Adam1122
+Email: demo@brewbite-pos.app
+Password: demo1234
 
 ## ✨ Features
 
