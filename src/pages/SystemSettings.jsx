@@ -41,7 +41,7 @@ export default function SystemSettings() {
 
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
         {/* Language & Region */}
-        <section className="rounded-2xl border bg-card p-5">
+        <section className="rounded-2xl border border-border bg-card p-5">
           <div className="mb-4 flex items-center gap-2">
             <div className="grid h-9 w-9 place-items-center rounded-xl bg-muted">
               <Globe className="h-5 w-5" />
@@ -79,7 +79,7 @@ export default function SystemSettings() {
         </section>
 
         {/* Appearance */}
-        <section className="rounded-2xl border bg-card p-5">
+        <section className="rounded-2xl border border-border bg-card p-5">
           <div className="mb-4 flex items-center gap-2">
             <div className="grid h-9 w-9 place-items-center rounded-xl bg-muted">
               <Palette className="h-5 w-5" />

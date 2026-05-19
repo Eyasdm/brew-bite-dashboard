@@ -56,7 +56,7 @@ function DeleteConfirmModal({ user, onConfirm, onCancel, loading }) {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4">
-      <div className="w-full max-w-sm rounded-2xl border bg-card p-6 shadow-xl">
+      <div className="w-full max-w-sm rounded-2xl border border-border bg-card p-6 shadow-xl">
         <div className="flex items-center gap-3 mb-4">
           <div className="h-10 w-10 rounded-xl bg-danger-soft grid place-items-center shrink-0">
             <AlertTriangle className="h-5 w-5 text-red-600" />
@@ -75,7 +75,7 @@ function DeleteConfirmModal({ user, onConfirm, onCancel, loading }) {
           <button
             type="button"
             onClick={onCancel}
-            className="flex-1 rounded-xl border px-4 py-2 text-sm font-medium hover:bg-muted transition"
+            className="flex-1 rounded-xl border border-border px-4 py-2 text-sm font-medium hover:bg-muted transition"
           >
             {t("common.cancel")}
           </button>
@@ -226,8 +226,8 @@ export default function UserManagement() {
       </div>
 
       {/* Search */}
-      <div className="rounded-2xl border bg-card p-4">
-        <div className="flex h-11 items-center gap-2 rounded-xl border px-3">
+      <div className="rounded-2xl border border-border bg-card p-4">
+        <div className="flex h-11 items-center gap-2 rounded-xl border border-border px-3">
           <Search className="h-4 w-4 text-text-muted" />
           <input
             value={search}
@@ -239,7 +239,7 @@ export default function UserManagement() {
       </div>
 
       {/* Table */}
-      <section className="rounded-2xl border bg-card">
+      <section className="rounded-2xl border border-border bg-card">
         <div className="border-b border-border px-4 py-4 text-sm font-medium">
           {t("users.tableTitle")} ({filteredUsers.length})
         </div>
@@ -281,13 +281,13 @@ export default function UserManagement() {
                             setOpenMenuId(openMenuId === u.id ? null : u.id)
                           }
                           aria-label={t("common.openMenu")}
-                          className="inline-flex h-9 w-9 items-center justify-center rounded-xl border"
+                          className="inline-flex h-9 w-9 items-center justify-center rounded-xl border border-border"
                         >
                           <MoreHorizontal className="h-4 w-4" />
                         </button>
 
                         {openMenuId === u.id && (
-                          <div className="absolute right-4 top-12 z-20 w-32 rounded-xl border bg-card shadow">
+                          <div className="absolute right-4 top-12 z-20 w-32 rounded-xl border border-border bg-card shadow">
                             <button
                               onClick={() => {
                                 setEditingUser(u);
