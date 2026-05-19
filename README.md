@@ -8,13 +8,14 @@
 
 ## 🌐 Live Demo
 
-🔗 **[brew-bite-dashboard.netlify.app](https://brew-bite-dashboard.netlify.app)** ← _replace with your actual URL_
+🔗 **[brew-bite-dashboard.netlify.app](https://brew-bite-dashboard.netlify.app)**
 
 > A demo account is available on the login page for recruiters and clients to explore the dashboard.
 
 ---
 
 ## Demo account
+
 Email: demo@brewbite-pos.app
 Password: demo1234
 
@@ -34,18 +35,18 @@ Password: demo1234
 
 ## 🛠️ Tech Stack
 
-| Layer | Technology |
-|---|---|
-| Framework | [React 19](https://react.dev) + [Vite](https://vitejs.dev) |
-| Routing | [React Router v7](https://reactrouter.com) |
-| UI | [Tailwind CSS](https://tailwindcss.com) |
-| Data Fetching | [TanStack Query (React Query)](https://tanstack.com/query) |
-| Charts | [Recharts](https://recharts.org) |
-| Backend / DB | [Supabase](https://supabase.com) (Auth, PostgreSQL, Storage) |
-| i18n | [react-i18next](https://react.i18next.com) |
-| Icons | [Lucide React](https://lucide.dev) |
-| Notifications | [React Hot Toast](https://react-hot-toast.com) |
-| Deployment | [Netlify](https://netlify.com) |
+| Layer         | Technology                                                   |
+| ------------- | ------------------------------------------------------------ |
+| Framework     | [React 19](https://react.dev) + [Vite](https://vitejs.dev)   |
+| Routing       | [React Router v7](https://reactrouter.com)                   |
+| UI            | [Tailwind CSS](https://tailwindcss.com)                      |
+| Data Fetching | [TanStack Query (React Query)](https://tanstack.com/query)   |
+| Charts        | [Recharts](https://recharts.org)                             |
+| Backend / DB  | [Supabase](https://supabase.com) (Auth, PostgreSQL, Storage) |
+| i18n          | [react-i18next](https://react.i18next.com)                   |
+| Icons         | [Lucide React](https://lucide.dev)                           |
+| Notifications | [React Hot Toast](https://react-hot-toast.com)               |
+| Deployment    | [Netlify](https://netlify.com)                               |
 
 ---
 
@@ -129,7 +130,6 @@ This project is open source and available under the [MIT License](LICENSE).
 ---
 
 <p align="center">Built with ☕ by <a href="https://github.com/Eyasdm">Eyas</a></p>
-
 
 ## Currency Conversion
 

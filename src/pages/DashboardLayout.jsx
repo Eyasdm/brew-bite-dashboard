@@ -25,11 +25,13 @@ export default function DashboardLayout() {
 
   return (
     <div
-      className={`grid min-h-screen bg-bg text-text ${
+      className={`grid min-h-screen bg-bg text-text transition-[grid-template-columns] duration-300 ${
         sidebarOpen ? "grid-cols-[260px_1fr]" : "grid-cols-[0px_1fr]"
       }`}
     >
-      <Sidebar user={sidebarUser} />
+      <div className="overflow-hidden">
+        <Sidebar user={sidebarUser} />
+      </div>
 
       <div className="grid grid-rows-[60px_1fr]">
         <header className="flex items-center justify-between border-b border-border bg-card px-4">

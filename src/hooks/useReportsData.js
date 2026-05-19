@@ -1,27 +1,13 @@
-import { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { fetchOrdersByRange } from "../services/orders";
 import { getRangeStart } from "../utils/reports.utils";
 
 export function useReportsData(range) {
-  const [orders, setOrders] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    async function load() {
-      setLoading(true);
-      try {
-        const start = getRangeStart(range);
-        const data = await fetchOrdersByRange(start);
-        setOrders(data);
-      } catch (e) {
-        console.error("Failed to load reports", e);
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    load();
-  }, [range]);
+  const { data: orders = [], isLoading: loading } = useQuery({
+    queryKey: ["reports-orders", range],
+    queryFn: () => fetchOrdersByRange(getRangeStart(range)),
+    staleTime: 60_000,
+  });
 
   return { orders, loading };
 }

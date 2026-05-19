@@ -8,7 +8,9 @@ import {
   getOrderStatusOptions,
   getOrderTypeOptions,
 } from "../constants/filters.constants";
-import { formatMoney, getStartTimestamp } from "../utils/formaters";
+import { getStartTimestamp } from "../utils/formaters";
+import { formatCurrency } from "../utils/formatCurrency";
+import { useCurrency } from "../context/CurrencyContext";
 import { useOrders } from "../hooks/useOrders";
 
 /* ------------------ helpers ------------------ */
@@ -66,6 +68,7 @@ function getPaymentBadge(isPaid, t) {
  * =================================================== */
 export default function OrderManagement() {
   const { t } = useTranslation();
+  const { currency } = useCurrency();
 
   /* ------------------ filters ------------------ */
   const [search, setSearch] = useState("");
@@ -187,7 +190,6 @@ export default function OrderManagement() {
                 <th className="px-4 py-3 text-left font-medium">
                   {t("orders.table.total")}
                 </th>
-
               </tr>
             </thead>
 
@@ -232,9 +234,8 @@ export default function OrderManagement() {
                         <Badge tone={p.tone}>{p.label}</Badge>
                       </td>
                       <td className="px-4 py-3 text-text">
-                        {formatMoney(order.totalPrice)}
+                        {formatCurrency(order.totalPrice, currency)}
                       </td>
-
                     </tr>
                   );
                 })}

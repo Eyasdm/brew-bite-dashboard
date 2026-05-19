@@ -40,7 +40,6 @@ export default function AddEditUserModal({
 
   if (!open) return null;
 
- 
   const formKey =
     mode === "edit" && initialData ? `edit-${initialData.id}` : "add";
 
@@ -62,7 +61,7 @@ export default function AddEditUserModal({
 /* ================= Inner Form ================= */
 function FormContent({ mode, initialData, onClose, onSubmit, loading, t }) {
   const [form, setForm] = useState(() =>
-    mode === "edit" && initialData ? mapUserToForm(initialData) : EMPTY_FORM
+    mode === "edit" && initialData ? mapUserToForm(initialData) : EMPTY_FORM,
   );
 
   const roleOptions = useMemo(
@@ -70,7 +69,7 @@ function FormContent({ mode, initialData, onClose, onSubmit, loading, t }) {
       { value: "admin", label: t("users.roles.admin") },
       { value: "staff", label: t("users.roles.staff") },
     ],
-    [t]
+    [t],
   );
 
   function handleSubmit(e) {
@@ -99,7 +98,7 @@ function FormContent({ mode, initialData, onClose, onSubmit, loading, t }) {
       />
 
       {/* modal */}
-      <div className="relative w-full max-w-[520px] rounded-2xl bg-white px-8 py-6 shadow-xl">
+      <div className="relative w-full max-w-[520px] rounded-2xl bg-card px-8 py-6 shadow-xl">
         {/* header */}
         <div className="mb-5 flex items-center justify-between">
           <h2 className="text-base font-semibold">
