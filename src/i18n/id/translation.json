@@ -270,6 +270,19 @@
       "totalOrders": "Total Pesanan",
       "avgOrder": "Rata-rata Pesanan",
       "activeStaff": "Staf Aktif"
+    },
+    "productsCharts": {
+      "noData": "Tidak ada data produk untuk periode yang dipilih",
+      "byCategory": "Produk per Kategori",
+      "topProducts": "Produk Terlaris",
+      "ordersCount": "{{count}} pesanan"
+    }
+  },
+  "charts": {
+    "error": {
+      "title": "Grafik tidak tersedia",
+      "description": "Terjadi kesalahan saat menampilkan grafik ini.",
+      "retry": "Coba lagi"
     }
   }
 }

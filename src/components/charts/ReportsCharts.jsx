@@ -5,11 +5,10 @@ import PeakHoursChart from "./PeakHoursChart";
 import ProductsCharts from "./ProductsCharts";
 import CustomersStats from "../reports/CustomersStats";
 import PerformanceStats from "../reports/PerformanceStats";
+import ChartErrorBoundary from "./ChartErrorBoundary";
 
 export default function ReportsCharts(props) {
   const { tab, orders } = props;
-
-  // if (loading) return <Skeleton />;
 
   if (!orders.length) return <EmptyState />;
 
@@ -18,13 +17,25 @@ export default function ReportsCharts(props) {
       return <OverviewCharts {...props} />;
 
     case "products":
-      return <ProductsCharts items={props.items} />;
+      return (
+        <ChartErrorBoundary key="products">
+          <ProductsCharts items={props.items} />
+        </ChartErrorBoundary>
+      );
 
     case "customers":
-      return <CustomersStats orders={orders} />;
+      return (
+        <ChartErrorBoundary key="customers">
+          <CustomersStats orders={orders} />
+        </ChartErrorBoundary>
+      );
 
     case "performance":
-      return <PerformanceStats orders={orders} />;
+      return (
+        <ChartErrorBoundary key="performance">
+          <PerformanceStats orders={orders} />
+        </ChartErrorBoundary>
+      );
 
     default:
       return <div>Coming soon</div>;
@@ -34,9 +45,17 @@ export default function ReportsCharts(props) {
 function OverviewCharts({ dailyOrdersData, revenueTrendData, peakHoursData }) {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-      <DailyOrdersRevenueChart data={dailyOrdersData} />
-      <RevenueTrendChart data={revenueTrendData} />
-      <PeakHoursChart data={peakHoursData} />
+      <ChartErrorBoundary key="daily-orders">
+        <DailyOrdersRevenueChart data={dailyOrdersData} />
+      </ChartErrorBoundary>
+
+      <ChartErrorBoundary key="revenue-trend">
+        <RevenueTrendChart data={revenueTrendData} />
+      </ChartErrorBoundary>
+
+      <ChartErrorBoundary key="peak-hours">
+        <PeakHoursChart data={peakHoursData} />
+      </ChartErrorBoundary>
     </div>
   );
 }

@@ -1,15 +1,17 @@
+import { useTranslation } from "react-i18next";
 import { buildProductsData } from "../../utils/reports.aggregations";
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from "recharts";
 
 const COLORS = ["#fb923c", "#f97316", "#ea580c", "#c2410c"];
 
 export default function ProductsCharts({ items }) {
+  const { t } = useTranslation();
   const { categories, products, topProducts } = buildProductsData(items);
 
   if (!items.length) {
     return (
       <div className="rounded-2xl border bg-card p-10 text-center text-text-muted">
-        No product data for selected period
+        {t("reports.productsCharts.noData")}
       </div>
     );
   }
@@ -34,9 +36,13 @@ export default function ProductsCharts({ items }) {
 }
 
 function ProductsDonut({ categories, products, COLORS }) {
+  const { t } = useTranslation();
+
   return (
     <>
-      <h3 className="mb-4 text-sm font-medium">Products by Category</h3>
+      <h3 className="mb-4 text-sm font-medium">
+        {t("reports.productsCharts.byCategory")}
+      </h3>
 
       <div className="h-80">
         <ResponsiveContainer width="100%" height="100%">
@@ -80,9 +86,13 @@ function ProductsDonut({ categories, products, COLORS }) {
 }
 
 function ProductsList({ products }) {
+  const { t } = useTranslation();
+
   return (
     <>
-      <h3 className="mb-4 text-sm font-medium">Top Products</h3>
+      <h3 className="mb-4 text-sm font-medium">
+        {t("reports.productsCharts.topProducts")}
+      </h3>
 
       <div className="space-y-3">
         {products.map((p, i) => (
@@ -94,7 +104,9 @@ function ProductsList({ products }) {
               <div className="text-sm font-medium">
                 #{i + 1} {p.name}
               </div>
-              <div className="text-xs text-text-muted">{p.orders} orders</div>
+              <div className="text-xs text-text-muted">
+                {t("reports.productsCharts.ordersCount", { count: p.orders })}
+              </div>
             </div>
 
             <div className="text-sm font-semibold text-green-600">

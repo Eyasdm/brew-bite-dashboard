@@ -270,6 +270,19 @@
       "totalOrders": "Total Orders",
       "avgOrder": "Avg Order Value",
       "activeStaff": "Active Staff"
+    },
+    "productsCharts": {
+      "noData": "No product data for selected period",
+      "byCategory": "Products by Category",
+      "topProducts": "Top Products",
+      "ordersCount": "{{count}} orders"
+    }
+  },
+  "charts": {
+    "error": {
+      "title": "Chart unavailable",
+      "description": "Something went wrong while rendering this chart.",
+      "retry": "Try again"
     }
   }
 }
