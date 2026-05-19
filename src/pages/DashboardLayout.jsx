@@ -29,7 +29,7 @@ export default function DashboardLayout() {
         sidebarOpen ? "grid-cols-[260px_1fr]" : "grid-cols-[0px_1fr]"
       }`}
     >
-      <div className="overflow-hidden">
+      <div className="sticky top-0 h-screen overflow-hidden">
         <Sidebar user={sidebarUser} />
       </div>
 

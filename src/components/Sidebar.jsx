@@ -24,7 +24,7 @@ function Sidebar({ user }) {
   const { t } = useTranslation();
 
   return (
-    <aside className="border-r border-sidebar-border text-sidebar-text flex flex-col">
+    <aside className="h-full border-r border-sidebar-border text-sidebar-text flex flex-col">
       <div>
         <header className="py-5 border-b border-sidebar-border">
           <div className="flex items-center gap-3 px-4">
