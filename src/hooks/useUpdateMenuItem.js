@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { QUERY_KEYS } from "../constants/queryKeys";
 import { supabase } from "../services/supabase";
 import toast from "react-hot-toast";
+import { useTranslation } from "react-i18next";
 
 async function updateMenuItem({ id, payload }) {
   const { error } = await supabase
@@ -21,6 +22,7 @@ async function updateMenuItem({ id, payload }) {
 
 export function useUpdateMenuItem() {
   const queryClient = useQueryClient();
+  const { t } = useTranslation();
 
   return useMutation({
     mutationFn: updateMenuItem,
@@ -57,11 +59,11 @@ export function useUpdateMenuItem() {
         queryClient.setQueryData(QUERY_KEYS.MENU, ctx.previous);
       }
 
-      toast.error("Failed to update item");
+      toast.error(t("menu.toast.updateError"));
     },
 
     onSuccess: () => {
-      toast.success("Item updated successfully");
+      toast.success(t("menu.toast.updateSuccess"));
     },
 
     onSettled: () => {

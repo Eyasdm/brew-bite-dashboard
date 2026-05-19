@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { Calendar, MoreHorizontal, Search as SearchIcon } from "lucide-react";
+import { Calendar, Search as SearchIcon } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
 import SelectMenu from "../components/SelectMenu";
@@ -187,9 +187,7 @@ export default function OrderManagement() {
                 <th className="px-4 py-3 text-left font-medium">
                   {t("orders.table.total")}
                 </th>
-                <th className="px-4 py-3 text-right font-medium">
-                  {t("orders.table.actions")}
-                </th>
+
               </tr>
             </thead>
 
@@ -197,7 +195,7 @@ export default function OrderManagement() {
               {isLoading && (
                 <tr>
                   <td
-                    colSpan={8}
+                    colSpan={7}
                     className="px-4 py-10 text-center text-sm text-text-muted"
                   >
                     {t("orders.loading")}
@@ -236,14 +234,7 @@ export default function OrderManagement() {
                       <td className="px-4 py-3 text-text">
                         {formatMoney(order.totalPrice)}
                       </td>
-                      <td className="px-4 py-3 text-right">
-                        <button
-                          aria-label="Order actions"
-                          className="h-9 w-9 inline-flex items-center justify-center rounded-xl border border-border hover:bg-muted transition"
-                        >
-                          <MoreHorizontal className="h-4 w-4 text-text-muted" />
-                        </button>
-                      </td>
+
                     </tr>
                   );
                 })}
@@ -251,7 +242,7 @@ export default function OrderManagement() {
               {!isLoading && filteredOrders.length === 0 && (
                 <tr>
                   <td
-                    colSpan={8}
+                    colSpan={7}
                     className="px-4 py-10 text-center text-sm text-text-muted"
                   >
                     {t("orders.empty")}

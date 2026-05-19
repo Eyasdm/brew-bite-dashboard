@@ -1,4 +1,6 @@
-import { formatCurrency, formatNumber } from "../../utils/formaters";
+import { formatNumber } from "../../utils/formaters";
+import { formatCurrency } from "../../utils/formatCurrency";
+import { useCurrency } from "../../context/CurrencyContext";
 
 export default function ChartTooltip({
   active,
@@ -6,6 +8,8 @@ export default function ChartTooltip({
   label,
   type = "currency", // "currency" | "number"
 }) {
+  const { currency } = useCurrency();
+
   if (!active || !payload?.length) return null;
 
   return (
@@ -17,7 +21,7 @@ export default function ChartTooltip({
           <span>{item.name}</span>
           <span className="font-medium">
             {type === "currency"
-              ? formatCurrency(item.value)
+              ? formatCurrency(item.value, currency)
               : formatNumber(item.value)}
           </span>
         </div>

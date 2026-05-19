@@ -1,4 +1,5 @@
 import { useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import SelectMenu from "../components/SelectMenu";
 
 import { useReportsData } from "../hooks/useReportsData";
@@ -29,6 +30,7 @@ const TABS = {
 
 export default function ReportsAndAnalytics() {
   /* ------------------ UI state ------------------ */
+  const { t } = useTranslation();
   const [range, setRange] = useState("all");
   const [activeTab, setActiveTab] = useState(TABS.OVERVIEW);
 
@@ -54,7 +56,7 @@ export default function ReportsAndAnalytics() {
     <div className="space-y-6">
       {/* Header */}
       <header className="flex items-center justify-between">
-        <h1 className="text-xl font-semibold">Reports & Analytics</h1>
+        <h1 className="text-xl font-semibold">{t("sidebar.reports")}</h1>
 
         <SelectMenu value={range} onChange={setRange} options={RANGE_OPTIONS} />
       </header>

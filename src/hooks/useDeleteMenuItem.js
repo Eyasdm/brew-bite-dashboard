@@ -1,9 +1,12 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "../services/supabase";
+import { QUERY_KEYS } from "../constants/queryKeys";
 import toast from "react-hot-toast";
+import { useTranslation } from "react-i18next";
 
 export function useDeleteMenuItem() {
   const queryClient = useQueryClient();
+  const { t } = useTranslation();
 
   return useMutation({
     mutationFn: async (id) => {
@@ -15,11 +18,11 @@ export function useDeleteMenuItem() {
 
     //  optimistic delete
     onMutate: async (id) => {
-      await queryClient.cancelQueries({ queryKey: ["menu"] });
+      await queryClient.cancelQueries({ queryKey: QUERY_KEYS.MENU });
 
-      const previousItems = queryClient.getQueryData(["menu"]);
+      const previousItems = queryClient.getQueryData(QUERY_KEYS.MENU);
 
-      queryClient.setQueryData(["menu"], (old = []) =>
+      queryClient.setQueryData(QUERY_KEYS.MENU, (old = []) =>
         old.filter((item) => item.id !== id)
       );
 
@@ -28,18 +31,18 @@ export function useDeleteMenuItem() {
 
     onError: (_err, _id, context) => {
       if (context?.previousItems) {
-        queryClient.setQueryData(["menu"], context.previousItems);
+        queryClient.setQueryData(QUERY_KEYS.MENU, context.previousItems);
       }
 
-      toast.error("Failed to delete item");
+      toast.error(t("menu.toast.deleteError"));
     },
 
     onSuccess: () => {
-      toast.success("Item deleted successfully");
+      toast.success(t("menu.toast.deleteSuccess"));
     },
 
     onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: ["menu"] });
+      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.MENU });
     },
   });
 }

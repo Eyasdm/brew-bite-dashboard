@@ -97,7 +97,7 @@ function Sidebar({ user }) {
               {user?.name || t("sidebar.defaultUser")}
             </span>
             <span className="text-xs text-sidebar-muted">
-              {user?.email || "admin@smartcafe.com"}
+              {user?.email || t("sidebar.defaultEmail")}
             </span>
           </div>
         </div>

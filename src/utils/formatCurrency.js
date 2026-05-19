@@ -1,4 +1,5 @@
-const USD_TO_IDR_RATE = 15500;
+// Fixed demo rate — see README for details
+const USD_TO_IDR_RATE = 16200;
 
 export function formatCurrency(value, currency) {
   const amount = Number(value || 0);

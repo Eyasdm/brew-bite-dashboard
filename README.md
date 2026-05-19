@@ -129,3 +129,8 @@ This project is open source and available under the [MIT License](LICENSE).
 ---
 
 <p align="center">Built with ☕ by <a href="https://github.com/Eyasdm">Eyas</a></p>
+
+
+## Currency Conversion
+
+The IDR conversion in `src/utils/formatCurrency.js` uses a fixed demo rate (`USD_TO_IDR_RATE = 16200`). This is intentional for a portfolio/demo project — it is not fetched live. Update the constant if you need a more current rate.
