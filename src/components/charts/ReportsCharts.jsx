@@ -24,7 +24,7 @@ export default function ReportsCharts(props) {
       return <CustomersStats orders={orders} />;
 
     case "performance":
-      return <PerformanceStats />;
+      return <PerformanceStats orders={orders} />;
 
     default:
       return <div>Coming soon</div>;

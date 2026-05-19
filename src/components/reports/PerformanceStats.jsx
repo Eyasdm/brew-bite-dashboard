@@ -1,35 +1,35 @@
 import { buildPerformanceStats } from "../../utils/reports.aggregations";
 
-export default function PerformanceStats() {
-  const { avgPrepTime, orderAccuracy, avgDeliveryTime, onTimeDelivery } =
-    buildPerformanceStats();
+export default function PerformanceStats({ orders = [] }) {
+  const { completionRate, cancellationRate, deliveryRate, totalDeliveries } =
+    buildPerformanceStats(orders);
 
   return (
-    <div className="rounded-2xl border bg-card p-6">
+    <div className="rounded-2xl border border-border bg-card p-6">
       <h3 className="mb-6 text-sm font-medium">Operational Metrics</h3>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         <Metric
-          value={`${avgPrepTime} min`}
-          label="Avg Prep Time"
+          value={`${completionRate}%`}
+          label="Completion Rate"
           color="text-green-600"
         />
 
         <Metric
-          value={`${orderAccuracy}%`}
-          label="Order Accuracy"
+          value={`${cancellationRate}%`}
+          label="Cancellation Rate"
+          color="text-red-500"
+        />
+
+        <Metric
+          value={`${deliveryRate}%`}
+          label="Delivery Orders"
           color="text-blue-600"
         />
 
         <Metric
-          value={`${avgDeliveryTime} min`}
-          label="Avg Delivery Time"
-          color="text-orange-600"
-        />
-
-        <Metric
-          value={`${onTimeDelivery}%`}
-          label="On-time Delivery"
+          value={totalDeliveries}
+          label="Total Deliveries"
           color="text-purple-600"
         />
       </div>
@@ -37,10 +37,9 @@ export default function PerformanceStats() {
   );
 }
 
-/* Inline KPI block */
 function Metric({ value, label, color }) {
   return (
-    <div className="rounded-xl border bg-card px-6 py-5 text-center">
+    <div className="rounded-xl border border-border bg-card px-6 py-5 text-center">
       <div className={`text-2xl font-semibold ${color}`}>{value}</div>
       <div className="mt-1 text-xs text-text-muted">{label}</div>
     </div>

@@ -46,7 +46,7 @@ export default function AddEditMenuItemModal({
   const formKey = mode === "edit" && initialData ? initialData.id : "add";
 
   const [form, setForm] = useState(() =>
-    mode === "edit" && initialData ? mapItemToForm(initialData) : EMPTY_FORM
+    mode === "edit" && initialData ? mapItemToForm(initialData) : EMPTY_FORM,
   );
 
   const categoryOptions = useMemo(() => getAddDrinkCategoryOptions(t), [t]);
@@ -64,7 +64,7 @@ export default function AddEditMenuItemModal({
         ...form,
         price: Number(form.price),
       },
-      resetForm
+      resetForm,
     );
   }
 
@@ -83,7 +83,7 @@ export default function AddEditMenuItemModal({
         />
 
         {/* Modal */}
-        <div className="relative w-full max-w-[560px] rounded-2xl bg-white px-8 py-6 shadow-xl">
+        <div className="relative w-full max-w-[560px] rounded-2xl bg-card px-8 py-6 shadow-xl">
           {/* Header */}
           <div className="mb-5 flex items-center justify-between">
             <h2 className="text-base font-semibold">
