@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useAuth } from "../state/AuthProvider";
 import { useNavigate, useLocation } from "react-router-dom";
 import toast from "react-hot-toast";
@@ -7,10 +7,12 @@ import { Moon, Sun, Coffee, Eye, EyeOff, Zap } from "lucide-react";
 import Logo from "../components/Logo";
 import { useTranslation } from "react-i18next";
 
-// ─── Demo credentials ────────────────────────────────────────────────────────
+// ─── Demo credentials ─────────────────────────────────────────────────────────
 const DEMO_EMAIL = "demo@brewbite-pos.app";
 const DEMO_PASSWORD = "demo1234";
 // ─────────────────────────────────────────────────────────────────────────────
+
+const RATE_LIMIT_MS = 3000; // minimum ms between login attempts
 
 export default function Login() {
   const { t } = useTranslation();
@@ -25,6 +27,10 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [cooldown, setCooldown] = useState(0); // seconds remaining
+
+  const lastAttemptRef = useRef(0);
+  const cooldownTimerRef = useRef(null);
 
   useEffect(() => {
     if (!initLoading && isAuthenticated) {
@@ -32,13 +38,49 @@ export default function Login() {
     }
   }, [isAuthenticated, initLoading, navigate, location.state]);
 
+  // Cleanup cooldown timer on unmount
+  useEffect(() => {
+    return () => {
+      if (cooldownTimerRef.current) clearInterval(cooldownTimerRef.current);
+    };
+  }, []);
+
+  function startCooldown(ms) {
+    const seconds = Math.ceil(ms / 1000);
+    setCooldown(seconds);
+
+    cooldownTimerRef.current = setInterval(() => {
+      setCooldown((prev) => {
+        if (prev <= 1) {
+          clearInterval(cooldownTimerRef.current);
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+  }
+
   async function handleSubmit(e) {
     e.preventDefault();
+
+    const now = Date.now();
+    const elapsed = now - lastAttemptRef.current;
+
+    if (elapsed < RATE_LIMIT_MS) {
+      const remaining = RATE_LIMIT_MS - elapsed;
+      startCooldown(remaining);
+      toast.error(t("login.tooFast"));
+      return;
+    }
+
+    lastAttemptRef.current = now;
     setLoading(true);
+
     try {
       await login({ email, password });
     } catch (err) {
       toast.error(err.message || t("errors.loginFailed"));
+      startCooldown(RATE_LIMIT_MS);
     } finally {
       setLoading(false);
     }
@@ -48,6 +90,8 @@ export default function Login() {
     setEmail(DEMO_EMAIL);
     setPassword(DEMO_PASSWORD);
   }
+
+  const isDisabled = loading || cooldown > 0;
 
   return (
     <div className="relative min-h-screen flex items-center justify-center bg-bg px-4">
@@ -162,12 +206,16 @@ export default function Login() {
             {/* Submit */}
             <button
               type="submit"
-              disabled={loading}
+              disabled={isDisabled}
               className="w-full bg-primary hover:opacity-90
                          text-primary-foreground font-medium py-2.5 rounded-lg
                          transition disabled:opacity-60 mt-1"
             >
-              {loading ? t("login.loading") : t("login.submit")}
+              {loading
+                ? t("login.loading")
+                : cooldown > 0
+                  ? `${t("login.wait")} ${cooldown}s`
+                  : t("login.submit")}
             </button>
           </form>
         </div>

@@ -23,7 +23,7 @@ export default function MenuCard({ item, onToggle, onEdit, onDelete }) {
         />
 
         {item.is_available && (
-          <span className="absolute top-3 right-3 rounded-full bg-green-100 px-2.5 py-1 text-xs font-medium text-green-700">
+          <span className="absolute top-3 right-3 rounded-full badge-green px-2.5 py-1 text-xs font-medium">
             {t("menu.availability.available")}
           </span>
         )}
@@ -33,7 +33,7 @@ export default function MenuCard({ item, onToggle, onEdit, onDelete }) {
       <div className="p-4 space-y-3">
         <div className="flex items-start justify-between gap-2">
           <h3 className="text-sm font-semibold text-text">{item.name}</h3>
-          <span className="text-sm font-semibold">
+          <span className="text-sm font-semibold text-text">
             {formatCurrency(item.price, currency)}
           </span>
         </div>
@@ -77,7 +77,7 @@ export default function MenuCard({ item, onToggle, onEdit, onDelete }) {
           <div className="flex gap-2">
             <button
               onClick={() => onEdit?.(item)}
-              className="h-9 w-9 grid place-items-center rounded-xl border border-border hover:bg-muted"
+              className="h-9 w-9 grid place-items-center rounded-xl border border-border hover:bg-muted transition"
               aria-label={t("common.edit")}
               title={t("common.edit")}
             >
@@ -86,11 +86,11 @@ export default function MenuCard({ item, onToggle, onEdit, onDelete }) {
 
             <button
               onClick={() => onDelete?.(item)}
-              className="h-9 w-9 grid place-items-center rounded-xl border border-border hover:bg-red-50"
+              className="h-9 w-9 grid place-items-center rounded-xl border border-border hover:bg-danger-soft transition"
               aria-label={t("common.delete")}
               title={t("common.delete")}
             >
-              <Trash2 className="h-4 w-4 text-red-500" />
+              <Trash2 className="h-4 w-4 text-danger" />
             </button>
           </div>
         </div>

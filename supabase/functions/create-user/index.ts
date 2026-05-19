@@ -1,27 +1,34 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
-const corsHeaders = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers":
-    "authorization, x-client-info, apikey, content-type",
-};
+const ALLOWED_ORIGIN = Deno.env.get("ALLOWED_ORIGIN") ?? "https://brew-bite-dashboard.netlify.app";
+
+function corsHeaders(origin: string) {
+  const allowed = origin === ALLOWED_ORIGIN ? origin : ALLOWED_ORIGIN;
+  return {
+    "Access-Control-Allow-Origin": allowed,
+    "Access-Control-Allow-Headers":
+      "authorization, x-client-info, apikey, content-type",
+    "Access-Control-Allow-Methods": "POST, OPTIONS",
+  };
+}
 
 serve(async (req) => {
+  const origin = req.headers.get("origin") ?? "";
+
   if (req.method === "OPTIONS") {
-    return new Response("ok", { headers: corsHeaders });
+    return new Response("ok", { headers: corsHeaders(origin) });
   }
 
   try {
     const body = await req.json();
-    console.log("CREATE USER BODY 👉", body);
 
     const { email, password, full_name, role, is_active } = body;
 
     if (!email || !password || !full_name || !role) {
       return new Response(
         JSON.stringify({ error: "Missing required fields" }),
-        { status: 400, headers: corsHeaders }
+        { status: 400, headers: corsHeaders(origin) }
       );
     }
 
@@ -41,14 +48,11 @@ serve(async (req) => {
     if (authError) throw authError;
 
     const userId = auth.user.id;
-    console.log("AUTH USER CREATED 👉", userId);
 
     // 2️⃣ Store role in JWT (app_metadata)
     const { error: metaError } =
       await supabase.auth.admin.updateUserById(userId, {
-        app_metadata: {
-          role, // admin | staff
-        },
+        app_metadata: { role },
       });
 
     if (metaError) throw metaError;
@@ -70,23 +74,19 @@ serve(async (req) => {
 
     if (profileError) throw profileError;
 
-    console.log("PROFILE CREATED 👉", profile.id);
-
     return new Response(JSON.stringify(profile), {
       status: 200,
       headers: {
-        ...corsHeaders,
+        ...corsHeaders(origin),
         "Content-Type": "application/json",
       },
     });
   } catch (err: any) {
-    console.error("CREATE USER FAILED 👉", err);
+    console.error("CREATE USER FAILED:", err);
 
     return new Response(
-      JSON.stringify({
-        error: err.message ?? "Create user failed",
-      }),
-      { status: 500, headers: corsHeaders }
+      JSON.stringify({ error: err.message ?? "Create user failed" }),
+      { status: 500, headers: corsHeaders(origin) }
     );
   }
 });

@@ -63,12 +63,22 @@
 
   --destructive: var(--danger);
   --destructive-foreground: var(--danger-foreground);
+
+  /* Semantic badge tokens — light */
+  --badge-green-bg: 142 76% 92%;
+  --badge-green-text: 142 60% 28%;
+  --badge-yellow-bg: 45 93% 90%;
+  --badge-yellow-text: 40 80% 28%;
+  --badge-blue-bg: 217 92% 93%;
+  --badge-blue-text: 217 70% 35%;
+  --badge-red-bg: 0 93% 93%;
+  --badge-red-text: 0 65% 38%;
+  --badge-purple-bg: 270 100% 95%;
+  --badge-purple-text: 270 60% 38%;
 }
 
 /* =========================
    Theme Tokens (DARK)
-   - Only values change
-   - Classes stay the same
    ========================= */
 .dark {
   --bg: 222 22% 10%;
@@ -80,9 +90,9 @@
   --border: 220 14% 20%;
   --ring: 220 14% 30%;
 
-  --text-strong: 0 0% 98%; /* headings */
-  --text: 0 0% 92%; /* normal text */
-  --text-muted: 220 10% 70%; /* muted */
+  --text-strong: 0 0% 98%;
+  --text: 0 0% 92%;
+  --text-muted: 220 10% 70%;
 
   --primary: 24 95% 55%;
   --primary-foreground: 0 0% 100%;
@@ -122,4 +132,47 @@
 
   --destructive: var(--danger);
   --destructive-foreground: var(--danger-foreground);
+
+  /* Semantic badge tokens — dark (muted, not blinding) */
+  --badge-green-bg: 142 35% 16%;
+  --badge-green-text: 142 60% 68%;
+  --badge-yellow-bg: 45 35% 16%;
+  --badge-yellow-text: 43 80% 68%;
+  --badge-blue-bg: 217 35% 16%;
+  --badge-blue-text: 217 80% 72%;
+  --badge-red-bg: 0 35% 16%;
+  --badge-red-text: 0 70% 68%;
+  --badge-purple-bg: 270 30% 16%;
+  --badge-purple-text: 270 70% 75%;
+}
+
+/* =========================
+   Semantic badge utilities
+   Auto dark-mode-aware
+   ========================= */
+@layer components {
+  .badge-green {
+    background-color: hsl(var(--badge-green-bg));
+    color: hsl(var(--badge-green-text));
+  }
+  .badge-yellow {
+    background-color: hsl(var(--badge-yellow-bg));
+    color: hsl(var(--badge-yellow-text));
+  }
+  .badge-blue {
+    background-color: hsl(var(--badge-blue-bg));
+    color: hsl(var(--badge-blue-text));
+  }
+  .badge-red {
+    background-color: hsl(var(--badge-red-bg));
+    color: hsl(var(--badge-red-text));
+  }
+  .badge-purple {
+    background-color: hsl(var(--badge-purple-bg));
+    color: hsl(var(--badge-purple-text));
+  }
+  .badge-gray {
+    background-color: hsl(var(--muted));
+    color: hsl(var(--text));
+  }
 }

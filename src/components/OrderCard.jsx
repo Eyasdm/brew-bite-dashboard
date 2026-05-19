@@ -73,18 +73,17 @@ function OrderCard({ order, onChangeStatus }) {
               </span>
 
               {order.type === "dine-in" && order.table ? (
-                <span className="ml-1 shrink-0 rounded-full border border-border bg-card px-2 py-0.5 text-xs text-text-muted">
+                <span className="ml-1 shrink-0 rounded-full border border-border bg-muted px-2 py-0.5 text-xs text-text-muted">
                   {t("orders.table")} {order.table}
                 </span>
               ) : null}
             </div>
           </div>
 
+          {/* Paid / Unpaid badge — theme-aware */}
           <span
             className={`shrink-0 rounded-full px-2.5 py-1 text-xs font-medium ${
-              order.paid
-                ? "bg-success-soft text-success border border-border"
-                : "bg-muted text-text border border-border"
+              order.paid ? "badge-green" : "badge-gray"
             }`}
           >
             {order.paid ? t("orders.payment.paid") : t("orders.payment.unpaid")}
@@ -115,7 +114,7 @@ function OrderCard({ order, onChangeStatus }) {
               <button
                 type="button"
                 onClick={() => onChangeStatus(order.id, "ready")}
-                className="h-10 px-4 rounded-xl bg-success text-success-foreground hover:opacity-90 transition inline-flex items-center gap-2"
+                className="h-10 px-4 rounded-xl bg-success text-success-fg hover:opacity-90 transition inline-flex items-center gap-2 text-sm font-medium"
               >
                 <CheckCircle2 className="h-4 w-4" />
                 {t("orders.markReady")}
@@ -126,7 +125,7 @@ function OrderCard({ order, onChangeStatus }) {
               <button
                 type="button"
                 onClick={() => onChangeStatus(order.id, "delivered")}
-                className="h-10 px-4 rounded-xl bg-blue-500 text-primary-foreground hover:opacity-90 transition inline-flex items-center gap-2"
+                className="h-10 px-4 rounded-xl bg-info text-info-fg hover:opacity-90 transition inline-flex items-center gap-2 text-sm font-medium"
               >
                 <Truck className="h-4 w-4" />
                 {t("orders.markDelivered")}
@@ -157,22 +156,22 @@ function StatusPill({ status }) {
     preparing: {
       label: t("orders.status.preparing"),
       icon: Clock3,
-      className: "bg-primary-soft text-primary border border-border",
+      className: "bg-warning-soft text-warning",
     },
     ready: {
       label: t("orders.status.ready"),
       icon: CheckCircle2,
-      className: "bg-success-soft text-success border border-border",
+      className: "bg-success-soft text-success",
     },
     delivered: {
       label: t("orders.status.delivered"),
       icon: Truck,
-      className: "bg-blue-100 text-blue-600 border border-border",
+      className: "bg-info-soft text-info",
     },
     cancelled: {
       label: t("orders.status.cancelled"),
       icon: Clock3,
-      className: "bg-muted text-text border border-border",
+      className: "bg-muted text-text-muted",
     },
   }[status];
 
@@ -181,7 +180,7 @@ function StatusPill({ status }) {
   return (
     <span
       className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium ${
-        cfg?.className || "bg-muted text-text border border-border"
+        cfg?.className || "bg-muted text-text-muted"
       }`}
     >
       <Icon className="h-3.5 w-3.5" />

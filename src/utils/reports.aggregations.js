@@ -79,25 +79,14 @@ export function buildProductsData(items) {
 
     if (!name || !category) return;
 
-    // Category aggregation
     if (!categoriesMap[category]) {
-      categoriesMap[category] = {
-        name: category,
-        orders: 0,
-        revenue: 0,
-      };
+      categoriesMap[category] = { name: category, orders: 0, revenue: 0 };
     }
     categoriesMap[category].orders += qty;
     categoriesMap[category].revenue += revenue;
 
-    // Product aggregation
     if (!productsMap[name]) {
-      productsMap[name] = {
-        name,
-        category,
-        orders: 0,
-        revenue: 0,
-      };
+      productsMap[name] = { name, category, orders: 0, revenue: 0 };
     }
     productsMap[name].orders += qty;
     productsMap[name].revenue += revenue;
@@ -114,24 +103,61 @@ export function buildProductsData(items) {
 }
 
 export function buildCustomerStats(orders) {
-  const totalOrders = orders.length;
+  if (!orders.length) {
+    return { avgOrdersPerCustomer: 0, returningRate: 0 };
+  }
 
-  const avgOrdersPerCustomer =
-    totalOrders === 0 ? 0 : totalOrders / totalOrders;
+  // Count orders per unique customer name
+  const customerOrderCounts = {};
+  orders.forEach((o) => {
+    const name = o.customerName;
+    if (!name) return;
+    customerOrderCounts[name] = (customerOrderCounts[name] || 0) + 1;
+  });
 
-  const returningRate = totalOrders > 1 ? 87 : 0;
+  const customerList = Object.values(customerOrderCounts);
+  const uniqueCustomers = customerList.length;
+
+  if (uniqueCustomers === 0) {
+    return { avgOrdersPerCustomer: 0, returningRate: 0 };
+  }
+
+  const avgOrdersPerCustomer = orders.length / uniqueCustomers;
+
+  // Returning = customers with more than 1 order
+  const returning = customerList.filter((count) => count > 1).length;
+  const returningRate =
+    uniqueCustomers > 0 ? Math.round((returning / uniqueCustomers) * 100) : 0;
 
   return {
-    avgOrdersPerCustomer,
+    avgOrdersPerCustomer: Math.round(avgOrdersPerCustomer * 10) / 10,
     returningRate,
-    satisfaction: 4.2, // dummy / placeholder
   };
 }
-export function buildPerformanceStats() {
+
+export function buildPerformanceStats(orders) {
+  if (!orders.length) {
+    return {
+      avgPrepTime: 0,
+      completionRate: 0,
+      deliveryRate: 0,
+      cancellationRate: 0,
+    };
+  }
+
+  const delivered = orders.filter((o) => o.status === "delivered").length;
+  const cancelled = orders.filter((o) => o.status === "cancelled").length;
+  const deliveryOrders = orders.filter((o) => o.type === "delivery").length;
+
+  const completionRate = Math.round((delivered / orders.length) * 100);
+  const cancellationRate = Math.round((cancelled / orders.length) * 100);
+  const deliveryRate =
+    orders.length > 0 ? Math.round((deliveryOrders / orders.length) * 100) : 0;
+
   return {
-    avgPrepTime: 5.2, // minutes
-    orderAccuracy: 96.5, // %
-    avgDeliveryTime: 10, // minutes
-    onTimeDelivery: 92, // %
+    completionRate,
+    cancellationRate,
+    deliveryRate,
+    totalDeliveries: deliveryOrders,
   };
 }

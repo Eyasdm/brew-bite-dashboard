@@ -17,20 +17,21 @@ function cx(...classes) {
 }
 
 /* ------------------ badge ------------------ */
+// Uses CSS utility classes from index.css — auto dark-mode aware
 function Badge({ tone = "gray", children }) {
-  const tones = {
-    gray: "bg-muted text-text",
-    yellow: "bg-yellow-100 text-yellow-800 border border-yellow-200",
-    green: "bg-green-100 text-green-800 border border-green-200",
-    blue: "bg-blue-100 text-blue-800 border border-blue-200",
-    red: "bg-red-100 text-red-800 border border-red-200",
+  const toneClass = {
+    gray: "badge-gray",
+    yellow: "badge-yellow",
+    green: "badge-green",
+    blue: "badge-blue",
+    red: "badge-red",
   };
 
   return (
     <span
       className={cx(
         "inline-flex items-center rounded-full px-2.5 py-1 text-xs font-medium",
-        tones[tone],
+        toneClass[tone] ?? "badge-gray",
       )}
     >
       {children}
@@ -88,9 +89,7 @@ export default function OrderManagement() {
         order.itemTitle?.toLowerCase().includes(query);
 
       const matchesStatus = status === "all" || order.status === status;
-
       const matchesType = type === "all" || order.type === type;
-
       const matchesDate = !startTime || order.createdAt >= startTime;
 
       return matchesSearch && matchesStatus && matchesType && matchesDate;
@@ -104,22 +103,24 @@ export default function OrderManagement() {
     <div className="max-w-full space-y-6">
       {/* Header */}
       <header>
-        <h1 className="text-xl font-semibold">{t("orders.title")}</h1>
+        <h1 className="text-xl font-semibold text-text">{t("orders.title")}</h1>
         <p className="mt-1 text-sm text-text-muted">{t("orders.subtitle")}</p>
       </header>
 
       {/* Filters */}
-      <section className="rounded-2xl border bg-card p-4">
-        <div className="text-sm font-medium">{t("orders.filters")}</div>
+      <section className="rounded-2xl border border-border bg-card p-4">
+        <div className="text-sm font-medium text-text">
+          {t("orders.filters")}
+        </div>
 
         <div className="mt-4 grid grid-cols-1 gap-3 lg:grid-cols-[1fr_180px_180px_220px]">
-          <div className="flex h-11 items-center gap-2 rounded-xl border bg-bg px-3">
+          <div className="flex h-11 items-center gap-2 rounded-xl border border-border bg-bg px-3">
             <SearchIcon className="h-4 w-4 text-text-muted" />
             <input
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder={t("orders.search")}
-              className="h-full w-full bg-transparent text-sm outline-none"
+              className="h-full w-full bg-transparent text-sm text-text outline-none"
             />
           </div>
 
@@ -145,7 +146,7 @@ export default function OrderManagement() {
 
             <button
               type="button"
-              className="h-11 w-11 inline-flex items-center justify-center rounded-xl border bg-bg hover:bg-muted transition"
+              className="h-11 w-11 inline-flex items-center justify-center rounded-xl border border-border bg-bg hover:bg-muted transition"
             >
               <Calendar className="h-4 w-4 text-text-muted" />
             </button>
@@ -154,9 +155,9 @@ export default function OrderManagement() {
       </section>
 
       {/* Table */}
-      <section className="overflow-hidden rounded-2xl border bg-card">
-        <div className="flex items-center justify-between border-b px-4 py-4">
-          <div className="text-sm font-medium">
+      <section className="overflow-hidden rounded-2xl border border-border bg-card">
+        <div className="flex items-center justify-between border-b border-border px-4 py-4">
+          <div className="text-sm font-medium text-text">
             {t("orders.recent")} ({filteredOrders.length})
           </div>
         </div>
@@ -164,24 +165,41 @@ export default function OrderManagement() {
         <div className="w-full overflow-x-auto">
           <table className="min-w-[900px] w-full">
             <thead>
-              <tr className="text-xs text-text-muted">
-                <th className="px-4 py-3">{t("orders.table.order")}</th>
-                <th className="px-4 py-3">{t("orders.table.customer")}</th>
-                <th className="px-4 py-3">{t("orders.table.datetime")}</th>
-                <th className="px-4 py-3">{t("orders.table.status")}</th>
-                <th className="px-4 py-3">{t("orders.table.type")}</th>
-                <th className="px-4 py-3">{t("orders.table.payment")}</th>
-                <th className="px-4 py-3">{t("orders.table.total")}</th>
-                <th className="px-4 py-3 text-right">
+              <tr className="border-b border-border text-xs text-text-muted">
+                <th className="px-4 py-3 text-left font-medium">
+                  {t("orders.table.order")}
+                </th>
+                <th className="px-4 py-3 text-left font-medium">
+                  {t("orders.table.customer")}
+                </th>
+                <th className="px-4 py-3 text-left font-medium">
+                  {t("orders.table.datetime")}
+                </th>
+                <th className="px-4 py-3 text-left font-medium">
+                  {t("orders.table.status")}
+                </th>
+                <th className="px-4 py-3 text-left font-medium">
+                  {t("orders.table.type")}
+                </th>
+                <th className="px-4 py-3 text-left font-medium">
+                  {t("orders.table.payment")}
+                </th>
+                <th className="px-4 py-3 text-left font-medium">
+                  {t("orders.table.total")}
+                </th>
+                <th className="px-4 py-3 text-right font-medium">
                   {t("orders.table.actions")}
                 </th>
               </tr>
             </thead>
 
-            <tbody className="divide-y">
+            <tbody className="divide-y divide-border">
               {isLoading && (
                 <tr>
-                  <td colSpan={8} className="px-4 py-10 text-center text-sm">
+                  <td
+                    colSpan={8}
+                    className="px-4 py-10 text-center text-sm text-text-muted"
+                  >
                     {t("orders.loading")}
                   </td>
                 </tr>
@@ -193,30 +211,37 @@ export default function OrderManagement() {
                   const p = getPaymentBadge(order.paid, t);
 
                   return (
-                    <tr key={order.orderNo} className="text-sm">
-                      <td className="px-4 py-3 font-medium">
+                    <tr
+                      key={order.orderNo}
+                      className="text-sm hover:bg-muted/40 transition-colors"
+                    >
+                      <td className="px-4 py-3 font-medium text-text">
                         #{order.orderNo}
                       </td>
-                      <td className="px-4 py-3">{order.customerName}</td>
+                      <td className="px-4 py-3 text-text">
+                        {order.customerName}
+                      </td>
                       <td className="px-4 py-3 text-text-muted">
                         {new Date(order.createdAt).toLocaleString()}
                       </td>
                       <td className="px-4 py-3">
                         <Badge tone={s.tone}>{s.label}</Badge>
                       </td>
-                      <td className="px-4 py-3 capitalize">{order.type}</td>
+                      <td className="px-4 py-3 capitalize text-text">
+                        {order.type}
+                      </td>
                       <td className="px-4 py-3">
                         <Badge tone={p.tone}>{p.label}</Badge>
                       </td>
-                      <td className="px-4 py-3">
+                      <td className="px-4 py-3 text-text">
                         {formatMoney(order.totalPrice)}
                       </td>
                       <td className="px-4 py-3 text-right">
                         <button
-                          className="h-9 w-9 inline-flex items-center justify-center rounded-xl border"
-                          onClick={() => console.log("Actions:", order.id)}
+                          aria-label="Order actions"
+                          className="h-9 w-9 inline-flex items-center justify-center rounded-xl border border-border hover:bg-muted transition"
                         >
-                          <MoreHorizontal className="h-4 w-4" />
+                          <MoreHorizontal className="h-4 w-4 text-text-muted" />
                         </button>
                       </td>
                     </tr>
@@ -225,7 +250,10 @@ export default function OrderManagement() {
 
               {!isLoading && filteredOrders.length === 0 && (
                 <tr>
-                  <td colSpan={8} className="px-4 py-10 text-center text-sm">
+                  <td
+                    colSpan={8}
+                    className="px-4 py-10 text-center text-sm text-text-muted"
+                  >
                     {t("orders.empty")}
                   </td>
                 </tr>
@@ -235,7 +263,7 @@ export default function OrderManagement() {
         </div>
 
         {isError && (
-          <div className="border-t px-4 py-3 text-sm text-red-600">
+          <div className="border-t border-border px-4 py-3 text-sm text-danger">
             {error?.message || t("orders.errors.loadFailed")}
           </div>
         )}
