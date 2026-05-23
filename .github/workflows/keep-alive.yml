@@ -1,0 +1,39 @@
+name: Supabase Keep-Alive
+
+on:
+  schedule:
+    - cron: "0 */6 * * *" # Every 6 hours
+  workflow_dispatch: # Manual trigger
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping Supabase brew-bite (DB-level)
+        run: |
+          RESPONSE=$(curl -s \
+            "${{ secrets.VITE_SUPABASE_URL }}/rest/v1/rpc/ping" \
+            -H "apikey: ${{ secrets.SUPABASE_SERVICE_KEY }}" \
+            -H "Authorization: Bearer ${{ secrets.SUPABASE_SERVICE_KEY }}" \
+            -H "Content-Type: application/json" \
+            -X POST \
+            -d '{}')
+          echo "Response: $RESPONSE"
+          if [ "$RESPONSE" != '"pong"' ]; then
+            echo "DB ping failed — response was: $RESPONSE"
+            echo "Check: is the ping() function created in Supabase SQL Editor?"
+            echo "Check: are VITE_SUPABASE_URL and SUPABASE_SERVICE_KEY secrets correct?"
+            exit 1
+          fi
+
+      - name: Verify DB was actually written
+        run: |
+          RESULT=$(curl -s \
+            "${{ secrets.VITE_SUPABASE_URL }}/rest/v1/keep_alive_log?select=pinged_at,source&order=pinged_at.desc&limit=1" \
+            -H "apikey: ${{ secrets.SUPABASE_SERVICE_KEY }}" \
+            -H "Authorization: Bearer ${{ secrets.SUPABASE_SERVICE_KEY }}")
+          echo "Last keep-alive record: $RESULT"
+          if [ "$RESULT" = "[]" ]; then
+            echo "ERROR: ping() ran but nothing was written to keep_alive_log!"
+            exit 1
+          fi
