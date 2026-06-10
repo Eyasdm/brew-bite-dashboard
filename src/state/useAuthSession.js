@@ -7,16 +7,34 @@ export function useAuthSession() {
   const [initLoading, setInitLoading] = useState(true);
 
   useEffect(() => {
-    supabase.auth.getSession().then(({ data }) => {
-      setSession(data.session ?? null);
-      setUser(data.session?.user ?? null);
+    supabase.auth.getSession().then(({ data, error }) => {
+      if (error) {
+        // Stale or revoked refresh token — wipe it from localStorage so it
+        // doesn't cause repeated 400 errors on every subsequent request.
+        supabase.auth.signOut({ scope: "local" });
+        setSession(null);
+        setUser(null);
+      } else {
+        setSession(data.session ?? null);
+        setUser(data.session?.user ?? null);
+      }
       setInitLoading(false);
     });
 
     const { data: listener } = supabase.auth.onAuthStateChange(
-      (_event, session) => {
-        setSession(session);
-        setUser(session?.user ?? null);
+      (event, newSession) => {
+        // SIGNED_OUT fires when: explicit logout, refresh token is revoked,
+        // or the refresh-token exchange returns a 400.
+        if (event === "SIGNED_OUT") {
+          setSession(null);
+          setUser(null);
+        } else if (newSession) {
+          setSession(newSession);
+          setUser(newSession.user ?? null);
+        } else {
+          setSession(null);
+          setUser(null);
+        }
       },
     );
 

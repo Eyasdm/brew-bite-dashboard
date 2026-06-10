@@ -1,14 +1,20 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { fetchOrders, updateOrderStatus } from "../services/orders";
 import { QUERY_KEYS } from "../constants/queryKeys";
+import { useAuth } from "../state/AuthProvider";
 
 export function useOrderPanel() {
   const queryClient = useQueryClient();
+  const { isAuthenticated } = useAuth();
 
   const ordersQuery = useQuery({
     queryKey: QUERY_KEYS.ORDERS,
     queryFn: fetchOrders,
     staleTime: 1000 * 30, // 30s (near real-time)
+    // Don't fetch when there is no valid session — avoids 500 errors from
+    // Supabase when the access token is expired or the refresh failed.
+    enabled: isAuthenticated,
+    retry: 1,
   });
 
   const updateStatusMutation = useMutation({
