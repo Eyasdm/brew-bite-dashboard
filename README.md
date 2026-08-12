@@ -37,6 +37,7 @@ Password: demo1234
 
 | Layer         | Technology                                                   |
 | ------------- | ------------------------------------------------------------ |
+| Language      | [TypeScript](https://www.typescriptlang.org) (strict mode)   |
 | Framework     | [React 19](https://react.dev) + [Vite](https://vitejs.dev)   |
 | Routing       | [React Router v7](https://reactrouter.com)                   |
 | UI            | [Tailwind CSS](https://tailwindcss.com)                      |
@@ -117,8 +118,9 @@ src/
 ├── services/          # Supabase client + data service functions
 ├── state/             # AuthProvider, useAuthSession, useAuthProfile
 ├── utils/             # Currency formatters, report aggregations
-├── App.jsx            # Root router
-└── main.jsx           # Entry point
+├── types/             # Shared TypeScript domain types
+├── App.tsx            # Root router
+└── main.tsx           # Entry point
 ```
 
 ---
@@ -133,4 +135,4 @@ This project is open source and available under the [MIT License](LICENSE).
 
 ## Currency Conversion
 
-The IDR conversion in `src/utils/formatCurrency.js` uses a fixed demo rate (`USD_TO_IDR_RATE = 16200`). This is intentional for a portfolio/demo project — it is not fetched live. Update the constant if you need a more current rate.
+The IDR conversion in `src/utils/formatCurrency.ts` uses a fixed demo rate (`USD_TO_IDR_RATE = 16200`). This is intentional for a portfolio/demo project — it is not fetched live. Update the constant if you need a more current rate.
